@@ -49,7 +49,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <title>Repintar formulario</title>
     <meta charset="UTF-8">
     <style>
-        h2 {
+        /*h1 {
+            text-align: center;
+            color: red ;
+        }*/
+        h1 {
             display: inline-block;
             color: #000;
             background: #fff;
@@ -57,17 +61,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             position: relative;
         }
 
-        h2:before {
+        h1:before {
             content: '';
             display: block;
             width: 100%;
             height: 100%;
-            background: linear-gradient(to right, red, yellow);
-            mix-blend-mode: screen; //<-- atento a esta linea//
+            background: linear-gradient(to right, #81005E, #003380);
+            mix-blend-mode: screen;
+            text-align: center;
             position: absolute;
             top: 0;
             left: 0;
         }
+
 
         body {
             background-image: url('tren1.jpg');
@@ -91,7 +97,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
         form {
-            background: linear-gradient(to bottom, #81005E, #2b598d);
+            background: linear-gradient(120deg, #81005E, #2b598d);
             width: 30%;
             min-width: 400px;
             max-width: 1500px;
@@ -143,6 +149,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             border: none;
             border-radius: 3px;
             cursor: pointer;
+            float: right;
+            margin-left: 20px;
         }
 
         input[type="checkbox"] {
@@ -240,13 +248,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <br><label for="publicidad">porfi acepta que Santi tenga la total potestad sobre mis datos</label>
             <input type="checkbox" id="datos" name="datos" <?php if (isset($datos)) echo "checked"; ?>>
             <br><br>
-            <p> <input type="submit"></p>
+
         </left>
-
-
+        <p> <input type="submit"></p>
+        <br><br>
 
 
     </form>
+
 </body>
 
 </html>
