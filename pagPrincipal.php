@@ -49,7 +49,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <title>Repintar formulario</title>
     <meta charset="UTF-8">
     <style>
-        
+        h2 {
+            display: inline-block;
+            color: #000;
+            background: #fff;
+            mix-blend-mode: multiply;
+            position: relative;
+        }
+
+        h2:before {
+            content: '';
+            display: block;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to right, red, yellow);
+            mix-blend-mode: screen; //<-- atento a esta linea//
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
 
         body {
             background-image: url('tren1.jpg');
@@ -59,8 +77,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             opacity: 1;
         }
 
-        left {
-            text-align: left;
+        center {
+            text-align: center;
+        }
+
+        right {
+            text-align: right;
         }
 
         #visor_imagenes {
@@ -83,11 +105,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             margin-top: 10px;
         }
 
+        .mov {
+            width: 100px;
+        }
+
+        .comu {
+            width: 180px;
+        }
+
         input[type="text"],
-        entradas {
+        .entradas {
             width: 33%;
             min-width: 100px;
         }
+
+
+
 
         input[type="range"] {
             width: 70%;
@@ -104,7 +137,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         input[type="submit"] {
-            background-color: #0074D9;
+            background-color: #81005E;
             color: #fff;
             padding: 10px 20px;
             border: none;
@@ -114,6 +147,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         input[type="checkbox"] {
             margin-right: 5px;
+            padding: 10px 20px;
         }
 
         p {
@@ -126,12 +160,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <body>
 
+    <h1>Train 2 Daw</h1>
     <form action="saludo.php" method="post">
         <left>
-            <h1>Train 2 Daw</h1>
+
             <h3>CAMPOS DE TEXTO:</h3>
             <label for="nombre">Nombre:</label>
-            <input value="<?php if (isset($nombre)) echo $nombre; ?>" id="entradas" name="nombre" type="text">
+            <input value="<?php if (isset($nombre)) echo $nombre; ?>" class="entradas" id="entradas" name="nombre" type="text">
             <label for="email">Email:</label>
             <input value="<?php if (isset($email)) echo $email; ?>" id="entradas" name="email" type="email">
 
@@ -160,55 +195,57 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <br>
             LD<input type="radio" id="trenes" name="tren" value="ld" <?php if (isset($tren) && $tren === "ld") echo "checked"; ?>>
             MD<input type="radio" id="trenes" name="tren" value="md" <?php if (isset($tren) && $tren === "md") echo "checked"; ?>>
-            Cercanias/Rodalies<input type="radio" id="trenes" name="cerca" value="naranja" <?php if (isset($tren) && $tren === "cerca") echo "checked"; ?>>
+            Cercanias/Rodalies<input type="radio" id="trenes" name="tren" value="naranja" <?php if (isset($tren) && $tren === "cerca") echo "checked"; ?>>
             AM<input type="radio" id="trenes" name="tren" value="am" <?php if (isset($tren) && $tren === "am") echo "checked"; ?>>
             <br>
 
 
             <br>
             <p>Posicion:</p>
-            <select name="movimiento">
+            <select class="mov" name="movimiento">
 
                 <option value="quieto" <?php if (isset($movimiento) && $movimiento === "quieto") echo "selected"; ?>>Quieto</option>
-
                 <option value="moviendo" <?php if (isset($movimiento) && $movimiento === "moviendo") echo "selected"; ?>>Movimiento</option>
-
                 <option value="reparando" <?php if (isset($movimiento) && $movimiento === "reparando") echo "selected"; ?>>Reparando</option>
 
             </select>
 
-                <br>
-                <p>Donde sacaste la foto </p>
+            <br>
+            <p>Donde sacaste la foto </p>
 
-            <select name="comunidad_autonoma">
-                <option value="Andalucía">Andalucía</option>
-                <option value="Aragón">Aragón</option>
-                <option value="Asturias">Asturias</option>
-                <option value="Canarias">Canarias</option>
-                <option value="Cantabria">Cantabria</option>
-                <option value="Castilla y León">Castilla y León</option>
-                <option value="Castilla-La Mancha">Castilla-La Mancha</option>
-                <option value="Cataluña">Cataluña</option>
-                <option value="Extremadura">Extremadura</option>
-                <option value="Galicia">Galicia</option>
-                <option value="Islas Baleares">Islas Baleares</option>
-                <option value="La Rioja">La Rioja</option>
-                <option value="Madrid">Madrid</option>
-                <option value="Murcia">Murcia</option>
-                <option value="Navarra">Navarra</option>
-                <option value="País Vasco">País Vasco</option>
-                <option value="Valencia">Comunidad Valenciana</option>
+            <select class="comu" name="comu" id="comu">
+
+                <option value="Andalucía" <?php if (isset($comunidad_autonoma) && $comunidad_autonoma === "Andalucía") echo "selected"; ?>>Andalucía</option>
+                <option value="Aragón" <?php if (isset($comunidad_autonoma) && $comunidad_autonoma === "Aragón") echo "selected"; ?>>Aragón</option>
+                <option value="Asturias" <?php if (isset($comunidad_autonoma) && $comunidad_autonoma === "Asturias") echo "selected"; ?>>Asturias</option>
+                <option value="Canarias" <?php if (isset($comunidad_autonoma) && $comunidad_autonoma === "Canarias") echo "selected"; ?>>Canarias</option>
+                <option value="Cantabria" <?php if (isset($comunidad_autonoma) && $comunidad_autonoma === "Cantabria") echo "selected"; ?>>Cantabria</option>
+                <option value="Castilla y León" <?php if (isset($comunidad_autonoma) && $comunidad_autonoma === "Castilla y León") echo "selected"; ?>>Castilla y León</option>
+                <option value="Castilla-La Mancha" <?php if (isset($comunidad_autonoma) && $comunidad_autonoma === "Castilla-La Mancha") echo "selected"; ?>>Castilla-La Mancha</option>
+                <option value="Cataluña" <?php if (isset($comunidad_autonoma) && $comunidad_autonoma === "Cataluña") echo "selected"; ?>>Cataluña</option>
+                <option value="Extremadura" <?php if (isset($comunidad_autonoma) && $comunidad_autonoma === "Extremadura") echo "selected"; ?>>Extremadura</option>
+                <option value="Galicia" <?php if (isset($comunidad_autonoma) && $comunidad_autonoma === "Galicia") echo "selected"; ?>>Galicia</option>
+                <option value="Islas Baleares" <?php if (isset($comunidad_autonoma) && $comunidad_autonoma === "Islas Baleares") echo "selected"; ?>>Islas Baleares</option>
+                <option value="La Rioja" <?php if (isset($comunidad_autonoma) && $comunidad_autonoma === "La Rioja") echo "selected"; ?>>La Rioja</option>
+                <option value="Madrid" <?php if (isset($comunidad_autonoma) && $comunidad_autonoma === "Madrid") echo "selected"; ?>>Madrid</option>
+                <option value="Murcia" <?php if (isset($comunidad_autonoma) && $comunidad_autonoma === "Murcia") echo "selected"; ?>>Murcia</option>
+                <option value="Navarra" <?php if (isset($comunidad_autonoma) && $comunidad_autonoma === "Navarra") echo "selected"; ?>>Navarra</option>
+                <option value="País Vasco" <?php if (isset($comunidad_autonoma) && $comunidad_autonoma === "País Vasco") echo "selected"; ?>>País Vasco</option>
+                <option value="Valencia" <?php if (isset($comunidad_autonoma) && $comunidad_autonoma === "Valencia") echo "selected"; ?>>Comunidad Valenciana</option>
+
             </select>
 
 
 
+            <br><label for="publicidad">porfi acepta que Santi tenga la total potestad sobre mis datos</label>
+            <input type="checkbox" id="datos" name="datos" <?php if (isset($datos)) echo "checked"; ?>>
             <br><br>
-            <input type="submit">
-            <p> </p>
+            <p> <input type="submit"></p>
         </left>
 
-        <label for="publicidad">Quiero recibir publicidad</label>
-        <input type="checkbox" id="publicidad" name="publicidad" <?php if (isset($publicidad)) echo "checked"; ?>>
+
+
+
     </form>
 </body>
 
