@@ -12,19 +12,51 @@ function validarNombre($a)
     return (true);
 }
 
+function aniadirError($salida){
+    if(isset($error)){
+        $error.= $salida;
+    }else{
+        $error = $salida;
+    }
+
+}
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if ($_POST["nombre"] == "") {
-        $error .= "Recuerda rellenar el nombre ";
+        aniadirError( "Recuerda rellenar el nombre ");
     } elseif (!validarNombre($_POST["nombre"])) {
-        $error .= "nombre mal introducido ";
+        aniadirError(  "nombre mal introducido ");
     }
 
     if ($_POST["email"] == "") {
-        $error .= "El email es obligatorio";
+        aniadirError(  "El email es obligatorio");
     } elseif (!filter_var($_POST["email"], FILTER_VALIDATE_EMAIL)) {
-        $error .= "Formato email incorrecto";
+        aniadirError(  "Formato email incorrecto");
     }
+
+    if ($_POST["slider"] == "") {
+        aniadirError(  "El slider es obligatorio");
+    }
+
+    if ($_POST["tren"] == "") {
+        aniadirError(  "Seleccionar el tren es obligatorio");
+    }
+
+
+    if ($_POST["movimiento"] == "") {
+        aniadirError(  "Seleccionar el movimiento es obligatorio");
+    }
+
+
+    if ($_POST["comu"] == "") {
+        aniadirError( "Seleccionar la comunidad es obligatorio");
+    }
+
+    if ($_POST["datos"] == "") {
+        aniadirError( "Seleccionar el datos es obligatorio");
+    }
+
 
 
 
@@ -33,9 +65,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($error)) {
         $nombre = $_POST["nombre"];
         $email = $_POST["email"];
+        $slider = $_POST["slider"];
+        $tren = $_POST["tren"];
+        $movimiento = $_POST["movimiento"];
+        $comu = $_POST["comu"];
+        $datos = $_POST["datos"];
         echo $error;
     } else {
-        header("Location: parametrosFormulario.php");
+        header("Location: contar.php");
     }
 }
 
@@ -169,7 +206,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <body>
 
     <h1>Train 2 Daw</h1>
-    <form action="saludo.php" method="post">
+    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
         <left>
 
             <h3>CAMPOS DE TEXTO:</h3>
@@ -180,8 +217,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             <br>
             <label for="slider">Edad de fabricacion</label>
-            <input type="range" id="slider" name="slider" min="1950" max="2023" step="1" value="2023" width="400px">
-            <output for="slider" id="sliderValue">2023</output>
+            <input type="range" id="slider" name="slider" min="1950" max="2023" step="1" value="<?php if (isset($slider)) echo $slider; ?>"  width="400px">
+            <output for="slider" id="sliderValue"><?PHP if (isset($slider)) echo $slider;  ?></output>
             <script>
                 // Actualiza el valor del slider en tiempo real
                 const slider = document.getElementById('slider');
