@@ -1,7 +1,6 @@
 <?php
 /* si va bien redirige a parametrosFormulario.php si va mal, mensaje de error */
 $ciudades = array();
-$error = "";
 function validarNombre($a)
 {
     trim($a);
@@ -283,7 +282,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
             <br><label for="publicidad">porfi acepta que Santi tenga la total potestad sobre mis datos</label>
-            <input type="checkbox" id="datos" name="datos" <?php if (isset($datos)) echo "checked"; ?>>
+            <input type="checkbox" id="datos" name="datos" <?php if (isset($datos)){echo "checked";}else{echo "2023";} ?>>
             <br><br>
 
         </left>
