@@ -11,65 +11,59 @@ function validarNombre($a)
     return (true);
 }
 
-function aniadirError($salida){
-    if(isset($error)){
-        $error.= $salida;
-    }else{
-        $error = $salida;
-    }
 
-}
+$error = "Hay errores en: ";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-    if ($_POST["nombre"] == "") {
-        aniadirError( "Recuerda rellenar el nombre ");
+    if (@$_POST["nombre"] == "") {
+        $error .=  "Rellenar el nombre ";
     } elseif (!validarNombre($_POST["nombre"])) {
-        aniadirError(  "nombre mal introducido ");
+        $error .=  "Nombre";
     }
 
-    if ($_POST["email"] == "") {
-        aniadirError(  "El email es obligatorio");
+    if (@$_POST["email"] == "") {
+        $error .=  ", email ";
     } elseif (!filter_var($_POST["email"], FILTER_VALIDATE_EMAIL)) {
-        aniadirError(  "Formato email incorrecto");
+        $error .=  ", email";
     }
 
-    if ($_POST["slider"] == "") {
-        aniadirError(  "El slider es obligatorio");
+    if (@$_POST["slider"] == "") {
+        $error .=  ", el slider es obligatorio";
     }
 
-    if ($_POST["tren"] == "") {
-        aniadirError(  "Seleccionar el tren es obligatorio");
-    }
-
-
-    if ($_POST["movimiento"] == "") {
-        aniadirError(  "Seleccionar el movimiento es obligatorio");
+    if (@$_POST["tren"] == "") {
+        $error .= ", el tren es obligatorio";
     }
 
 
-    if ($_POST["comu"] == "") {
-        aniadirError( "Seleccionar la comunidad es obligatorio");
-    }
-
-    if ($_POST["datos"] == "") {
-        aniadirError( "Seleccionar el datos es obligatorio");
+    if (@$_POST["movimiento"] == "") {
+        $error .=  " , el movimiento es obligatorio";
     }
 
 
+    if (@$_POST["comu"] == "") {
+        $error .= ", la comunidad";
+    }
+
+    if (@$_POST["datos"] == "") {
+        $error .= " y datos ";
+    }
 
 
 
 
-    if (isset($error)) {
-        $nombre = $_POST["nombre"];
-        $email = $_POST["email"];
-        $slider = $_POST["slider"];
-        $tren = $_POST["tren"];
-        $movimiento = $_POST["movimiento"];
-        $comu = $_POST["comu"];
-        $datos = $_POST["datos"];
-        echo $error;
+
+
+    if ($error != "Hay errores en: ") {
+        @$nombre = $_POST["nombre"];
+        @$email = $_POST["email"];
+        @$slider = $_POST["slider"];
+        @$tren = $_POST["tren"];
+        @$movimiento = $_POST["movimiento"];
+        @$comu = $_POST["comu"];
+        @$datos = $_POST["datos"];
+        echo "<script>alert('$error');</script>";
     } else {
         header("Location: contar.php");
     }
@@ -216,8 +210,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             <br>
             <label for="slider">Edad de fabricacion</label>
-            <input type="range" id="slider" name="slider" min="1950" max="2023" step="1" value="<?php if (isset($slider)) echo $slider; ?>"  width="400px">
-            <output for="slider" id="sliderValue"><?PHP if (isset($slider)) echo $slider;  ?></output>
+            <input type="range" id="slider" name="slider" min="1950" max="2023" step="1" value="<?php if (isset($slider)) {
+                                                                                                    echo $slider;
+                                                                                                } else {
+                                                                                                    echo "2023";
+                                                                                                } ?>" width="400px">
+            <output for="slider" id="sliderValue"><?PHP if (isset($slider)) {
+                                                        echo $slider;
+                                                    } else {
+                                                        echo "2023";
+                                                    }  ?></output>
             <script>
                 // Actualiza el valor del slider en tiempo real
                 const slider = document.getElementById('slider');
@@ -282,7 +284,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
             <br><label for="publicidad">porfi acepta que Santi tenga la total potestad sobre mis datos</label>
-            <input type="checkbox" id="datos" name="datos" <?php if (isset($datos)){echo "checked";}else{echo "2023";} ?>>
+            <input type="checkbox" id="datos" name="datos" <?php if (isset($datos)) {
+                                                                echo "checked";
+                                                            } else {
+                                                                echo "2023";
+                                                            } ?>>
             <br><br>
 
         </left>
