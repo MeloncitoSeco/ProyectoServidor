@@ -51,10 +51,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
 
-
-
-
-
     if ($error != "Hay errores en: ") {
         @$nombre = $_POST["nombre"];
         @$email = $_POST["email"];
@@ -79,10 +75,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <title>Repintar formulario</title>
     <meta charset="UTF-8">
     <style>
-        /*h1 {
-            text-align: center;
-            color: red ;
-        }*/
+        
         h1 {
             display: inline-block;
             color: #000;
@@ -106,7 +99,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
         body {
-            background-image: url('tren1.jpg');
+            background-image: url('tren2.jpg');
             background-repeat: no-repeat;
             background-attachment: fixed;
             background-size: 100% 100%;
@@ -127,6 +120,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
         form {
+            border-radius: 4px;
+            margin-left: 6px;
             background: linear-gradient(120deg, #81005E, #2b598d);
             width: 30%;
             min-width: 400px;
@@ -137,20 +132,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         label {
+            margin-left: 6px;
             display: block;
             margin-top: 10px;
         }
 
+        .margen {
+            margin-left: 6px;
+        }
+
         .mov {
+            margin-left: 6px;
             width: 100px;
         }
 
         .comu {
+            margin-left: 6px;
             width: 180px;
         }
 
         input[type="text"],
         .entradas {
+            margin-left: 6px;
             width: 33%;
             min-width: 100px;
         }
@@ -159,20 +162,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
         input[type="range"] {
+            margin-left: 6px;
             width: 70%;
         }
 
         select {
+            margin-left: 6px;
             width: 80px;
             padding: 3px;
             border-radius: 3px;
         }
 
         input[type="radio"] {
+            margin-left: 6px;
             margin-right: 5px;
         }
 
+        h3{
+            margin-left: 6px;
+        }
+
         input[type="submit"] {
+            margin-left: 6px;
             background-color: #81005E;
             color: #fff;
             padding: 10px 20px;
@@ -184,11 +195,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         input[type="checkbox"] {
+            margin-left: 6px;
             margin-right: 5px;
             padding: 10px 20px;
         }
 
+        .margenDerecha{
+            margin-right: 15px;
+        }
+
         p {
+            margin-left: 6px;
             color: #FFFFFF;
             font-weight: bold;
             margin-top: 10px;
@@ -206,11 +223,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <label for="nombre">Nombre:</label>
             <input value="<?php if (isset($nombre)) echo $nombre; ?>" class="entradas" id="entradas" name="nombre" type="text">
             <label for="email">Email:</label>
-            <input value="<?php if (isset($email)) echo $email; ?>" id="entradas" name="email" type="email">
+            <input value="<?php if (isset($email)) echo $email; ?>" id="entradas" name="email" type="email" class="margen">
 
             <br>
             <label for="slider">Edad de fabricacion</label>
-            <input type="range" id="slider" name="slider" min="1950" max="2023" step="1" value="<?php if (isset($slider)) {
+            <input type="range" id="slider" name="slider" class="margen" min="1950" max="2023" step="1" value="<?php if (isset($slider)) {
                                                                                                     echo $slider;
                                                                                                 } else {
                                                                                                     echo "2023";
@@ -233,16 +250,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <br>
 
             <h3>Tipo tren:</h3>
-            Ave<input type="radio" id="altaVelocidad" name="tren" value="ave" <?php if (isset($tren) && $tren === "ave") echo "checked"; ?>>
-            Alvia<input type="radio" id="altaVelocidad" name="tren" value="alvia" <?php if (isset($tren) && $tren === "alvia") echo "checked"; ?>>
-            Avant<input type="radio" id="altaVelocidad" name="tren" value="avant" <?php if (isset($tren) && $tren === "avant") echo "checked"; ?>>
-            IRYO<input type="radio" id="altaVelocidad" name="tren" value="iryo" <?php if (isset($tren) && $tren === "iryo") echo "checked"; ?>>
-            OIUGO<input type="radio" id="altaVelocidad" name="tren" value="oui" <?php if (isset($tren) && $tren === "oui") echo "checked"; ?>>
+            Ave<input type="radio" class="margen" id="altaVelocidad" name="tren" value="ave" <?php if (isset($tren) && $tren === "ave") echo "checked"; ?>>
+            Alvia<input type="radio"  class="margen" id="altaVelocidad" name="tren" value="alvia" <?php if (isset($tren) && $tren === "alvia") echo "checked"; ?>>
+            Avant<input type="radio" class="margen"  id="altaVelocidad" name="tren" value="avant" <?php if (isset($tren) && $tren === "avant") echo "checked"; ?>>
+            IRYO<input type="radio" class="margen"  id="altaVelocidad" name="tren" value="iryo" <?php if (isset($tren) && $tren === "iryo") echo "checked"; ?>>
+            OIUGO<input type="radio" class="margen"  id="altaVelocidad" name="tren" value="oui" <?php if (isset($tren) && $tren === "oui") echo "checked"; ?>>
             <br>
-            LD<input type="radio" id="trenes" name="tren" value="ld" <?php if (isset($tren) && $tren === "ld") echo "checked"; ?>>
-            MD<input type="radio" id="trenes" name="tren" value="md" <?php if (isset($tren) && $tren === "md") echo "checked"; ?>>
-            Cercanias/Rodalies<input type="radio" id="trenes" name="tren" value="naranja" <?php if (isset($tren) && $tren === "cerca") echo "checked"; ?>>
-            AM<input type="radio" id="trenes" name="tren" value="am" <?php if (isset($tren) && $tren === "am") echo "checked"; ?>>
+            LD<input type="radio" class="margen"  id="trenes" name="tren" value="ld" <?php if (isset($tren) && $tren === "ld") echo "checked"; ?>>
+            MD<input type="radio"  class="margen" id="trenes" name="tren" value="md" <?php if (isset($tren) && $tren === "md") echo "checked"; ?>>
+            Cercanias/Rodalies<input type="radio"  class="margen" id="trenes" name="tren" value="naranja" <?php if (isset($tren) && $tren === "cerca") echo "checked"; ?>>
+            AM<input type="radio" class="margen" id="trenes" name="tren" value="am" <?php if (isset($tren) && $tren === "am") echo "checked"; ?>>
             <br>
 
 
@@ -283,8 +300,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
 
-            <br><label for="publicidad">porfi acepta que Santi tenga la total potestad sobre mis datos</label>
-            <input type="checkbox" id="datos" name="datos" <?php if (isset($datos)) {
+            <br><label for="publicidad" class="margen">porfi acepta que Santi tenga la total potestad sobre mis datos</label>
+            <input type="checkbox" id="datos" name="datos" class="margen" <?php if (isset($datos)) {
                                                                 echo "checked";
                                                             } else {
                                                                 echo "2023";
@@ -292,7 +309,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <br><br>
 
         </left>
-        <p> <input type="submit"></p>
+        <p> <input type="submit"class ="margenDerecha"></p>
         <br><br>
 
 
