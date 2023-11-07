@@ -320,6 +320,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                                                 echo "2023";
                                                             } ?>>
             <br><br>
+            <label for="archivos">Selecciona archivos PNG y JPG:</label>
+            <input type="file" name="archivos[]" id="archivos" accept=".png, .jpg" multiple>
 
         </left>
         <p> <input type="submit"class ="margenDerecha"></p>
