@@ -133,24 +133,31 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             max-width: 1500px;
             padding-bottom: 10px;
             color: #FFFFFF;
+            border-radius: 10px;
             /* Color de texto blanco */
         }
 
         label {
+            margin-left: 10px;
             display: block;
             margin-top: 10px;
         }
 
         .mov {
+            margin-left: 10px;
             width: 100px;
         }
 
         .comu {
+            
+            margin-left: 10px;
             width: 180px;
         }
 
         input[type="text"],
         .entradas {
+            
+            margin-left: 10px;
             width: 33%;
             min-width: 100px;
         }
@@ -159,20 +166,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
         input[type="range"] {
+            margin-left: 10px;
             width: 70%;
         }
 
         select {
+            margin-left: 10px;
             width: 80px;
             padding: 3px;
             border-radius: 3px;
         }
 
         input[type="radio"] {
+            margin-left: 10px;
             margin-right: 5px;
         }
 
         input[type="submit"] {
+            margin-left: 10px;
             background-color: #81005E;
             color: #fff;
             padding: 10px 20px;
@@ -184,15 +195,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         input[type="checkbox"] {
+            margin-left: 10px;
             margin-right: 5px;
             padding: 10px 20px;
         }
 
+        h3{
+            
+            margin-left: 10px;
+        }
+
         p {
+            margin-left: 10px;
             color: #FFFFFF;
             font-weight: bold;
             margin-top: 10px;
         }
+        .margen-izquierdo-10px {
+            margin-left: 10px;
+        }
+
     </style>
 </head>
 
@@ -233,16 +255,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <br>
 
             <h3>Tipo tren:</h3>
-            Ave<input type="radio" id="altaVelocidad" name="tren" value="ave" <?php if (isset($tren) && $tren === "ave") echo "checked"; ?>>
-            Alvia<input type="radio" id="altaVelocidad" name="tren" value="alvia" <?php if (isset($tren) && $tren === "alvia") echo "checked"; ?>>
-            Avant<input type="radio" id="altaVelocidad" name="tren" value="avant" <?php if (isset($tren) && $tren === "avant") echo "checked"; ?>>
-            IRYO<input type="radio" id="altaVelocidad" name="tren" value="iryo" <?php if (isset($tren) && $tren === "iryo") echo "checked"; ?>>
-            OIUGO<input type="radio" id="altaVelocidad" name="tren" value="oui" <?php if (isset($tren) && $tren === "oui") echo "checked"; ?>>
+              Ave<input type="radio" id="altaVelocidad" name="tren" value="ave" <?php if (isset($tren) && $tren === "ave") echo "checked"; ?>>
+              Alvia<input type="radio" id="altaVelocidad" name="tren" value="alvia" <?php if (isset($tren) && $tren === "alvia") echo "checked"; ?>>
+              Avant<input type="radio" id="altaVelocidad" name="tren" value="avant" <?php if (isset($tren) && $tren === "avant") echo "checked"; ?>>
+              IRYO<input type="radio" id="altaVelocidad" name="tren" value="iryo" <?php if (isset($tren) && $tren === "iryo") echo "checked"; ?>>
+              OIUGO<input type="radio" id="altaVelocidad" name="tren" value="oui" <?php if (isset($tren) && $tren === "oui") echo "checked"; ?>>
             <br>
-            LD<input type="radio" id="trenes" name="tren" value="ld" <?php if (isset($tren) && $tren === "ld") echo "checked"; ?>>
-            MD<input type="radio" id="trenes" name="tren" value="md" <?php if (isset($tren) && $tren === "md") echo "checked"; ?>>
-            Cercanias/Rodalies<input type="radio" id="trenes" name="tren" value="naranja" <?php if (isset($tren) && $tren === "cerca") echo "checked"; ?>>
-            AM<input type="radio" id="trenes" name="tren" value="am" <?php if (isset($tren) && $tren === "am") echo "checked"; ?>>
+              LD<input type="radio" id="trenes" name="tren" value="ld" <?php if (isset($tren) && $tren === "ld") echo "checked"; ?>>
+              MD<input type="radio" id="trenes" name="tren" value="md" <?php if (isset($tren) && $tren === "md") echo "checked"; ?>>
+              Cercanias/Rodalies<input type="radio" id="trenes" name="tren" value="naranja" <?php if (isset($tren) && $tren === "cerca") echo "checked"; ?>>
+              AM<input type="radio" id="trenes" name="tren" value="am" <?php if (isset($tren) && $tren === "am") echo "checked"; ?>>
             <br>
 
 
@@ -281,7 +303,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             </select>
 
-
+            
 
             <br><label for="publicidad">porfi acepta que Santi tenga la total potestad sobre mis datos</label>
             <input type="checkbox" id="datos" name="datos" <?php if (isset($datos)) {
