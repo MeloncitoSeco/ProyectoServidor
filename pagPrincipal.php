@@ -134,8 +134,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         label {
             margin-left: 6px;
-            display: block;
             margin-top: 10px;
+        }
+        .espacio{
+            display: block;
         }
 
         .margen {
@@ -234,12 +236,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             <h3>CAMPOS DE TEXTO:</h3>
             <label for="nombre">Nombre:</label>
-            <input value="<?php if (isset($nombre)) echo $nombre; ?>" class="entradas" id="entradas" name="nombre" type="text">
+            <input value="<?php if (isset($nombre)) echo $nombre; ?>" class="entradas" id="entradas" name="nombre" type="text" placeholder="Holi">
+            <br><br>
             <label for="email">Email:</label>
             <input value="<?php if (isset($email)) echo $email; ?>" id="entradas" name="email" type="email" class="margen">
 
             <br>
-            <label for="slider">Edad de fabricacion</label>
+            <label for="slider" class="espacio">Edad de fabricacion</label>
             <input type="range" id="slider" name="slider" class="margen" min="1950" max="2023" step="1" value="<?php if (isset($slider)) {
                                                                                                     echo $slider;
                                                                                                 } else {
@@ -313,15 +316,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             
 
-            <br><label for="publicidad" class="margen">porfi acepta que Santi tenga la total potestad sobre mis datos</label>
-            <input type="checkbox" id="datos" name="datos" class="margen" <?php if (isset($datos)) {
+            <br><label for="publicidad" class="margen" class="espacio">porfi acepta que Santi tenga la total potestad sobre mis datos</label>
+            <input type="checkbox" class="espacio" id="datos" name="datos" class="margen" <?php if (isset($datos)) {
                                                                 echo "checked";
                                                             } else {
                                                                 echo "2023";
                                                             } ?>>
-            <br><br>
-            <label for="archivos">Selecciona archivos PNG y JPG:</label>
-            <input type="file" name="archivos[]" id="archivos" accept=".png, .jpg" multiple>
+            <label for="archivos" class="espacio">Selecciona archivos PNG y JPG:</label>
+            <input type="file" name="archivos[]" class="margen" id="archivos" accept=".png, .jpg" multiple>
 
         </left>
         <p> <input type="submit"class ="margenDerecha"></p>
