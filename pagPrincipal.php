@@ -235,11 +235,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <left>
 
             <h3>CAMPOS DE TEXTO:</h3>
-            <label for="nombre">Nombre:</label>
-            <input value="<?php if (isset($nombre)) echo $nombre; ?>" class="entradas" id="entradas" name="nombre" type="text" placeholder="Holi">
+            <label for="nombre">Nombre de usuario:</label>
+            <input value="<?php if (isset($nombre)) echo $nombre; ?>" class="entradas" id="entradas" name="nombre" type="text" placeholder="Inserte su nombre">
             <br><br>
             <label for="email">Email:</label>
-            <input value="<?php if (isset($email)) echo $email; ?>" id="entradas" name="email" type="email" class="margen">
+            <input value="<?php if (isset($email)) echo $email; ?>" id="entradas" name="email" type="email" class="margen" placeholder="Inserte su email">
 
             <br>
             <label for="slider" class="espacio">Edad de fabricacion</label>
