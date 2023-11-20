@@ -6,7 +6,7 @@ function validarNombre($a)
     trim($a);
     if (!ctype_upper($a[0]))
         return (false);
-    if (strlen($a) > 12)
+    if (strlen($a) > 24)
         return (false);
     return (true);
 }
@@ -14,6 +14,7 @@ function validarNombre($a)
 
 $error = "Hay errores en: ";
 // TODO Validar entradas de fotos
+// TODO añadir titulo pub
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if (@$_POST["modelo"] == "") {
@@ -284,16 +285,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
                 <h3>Tren:</h3>
-                Ave<input type="radio" class="margen" id="altaVelocidad" name="tren" value="ave" <?php if (isset($tren) && $tren === "ave") echo "checked"; ?>>
-                Alvia<input type="radio" class="margen" id="altaVelocidad" name="tren" value="alvia" <?php if (isset($tren) && $tren === "alvia") echo "checked"; ?>>
-                Avant<input type="radio" class="margen" id="altaVelocidad" name="tren" value="avant" <?php if (isset($tren) && $tren === "avant") echo "checked"; ?>>
-                IRYO<input type="radio" class="margen" id="altaVelocidad" name="tren" value="iryo" <?php if (isset($tren) && $tren === "iryo") echo "checked"; ?>>
-                OIUGO<input type="radio" class="margen" id="altaVelocidad" name="tren" value="oui" <?php if (isset($tren) && $tren === "oui") echo "checked"; ?>>
+                Ave<input type="radio" class="margen" id="altaVelocidad" name="tren" value="1" <?php if (isset($tren) && $tren === "1") echo "checked"; ?>>
+                Alvia<input type="radio" class="margen" id="altaVelocidad" name="tren" value="2" <?php if (isset($tren) && $tren === "2") echo "checked"; ?>>
+                Avant<input type="radio" class="margen" id="altaVelocidad" name="tren" value="3" <?php if (isset($tren) && $tren === "3") echo "checked"; ?>>
+                IRYO<input type="radio" class="margen" id="altaVelocidad" name="tren" value="4" <?php if (isset($tren) && $tren === "4") echo "checked"; ?>>
+                OUIGO<input type="radio" class="margen" id="altaVelocidad" name="tren" value="5" <?php if (isset($tren) && $tren === "5") echo "checked"; ?>>
                 <br>
-                LD<input type="radio" class="margen" id="trenes" name="tren" value="ld" <?php if (isset($tren) && $tren === "ld") echo "checked"; ?>>
-                MD<input type="radio" class="margen" id="trenes" name="tren" value="md" <?php if (isset($tren) && $tren === "md") echo "checked"; ?>>
-                Cercanias/Rodalies<input type="radio" class="margen" id="trenes" name="tren" value="naranja" <?php if (isset($tren) && $tren === "cerca") echo "checked"; ?>>
-                AM<input type="radio" class="margen" id="trenes" name="tren" value="am" <?php if (isset($tren) && $tren === "am") echo "checked"; ?>>
+                LD<input type="radio" class="margen" id="trenes" name="tren" value="6" <?php if (isset($tren) && $tren === "6") echo "checked"; ?>>
+                MD<input type="radio" class="margen" id="trenes" name="tren" value="7" <?php if (isset($tren) && $tren === "7") echo "checked"; ?>>
+                Cercanias/Rodalies<input type="radio" class="margen" id="trenes" name="tren" value="8" <?php if (isset($tren) && $tren === "8") echo "checked"; ?>>
+                AM<input type="radio" class="margen" id="trenes" name="tren" value="9" <?php if (isset($tren) && $tren === "am") echo "9"; ?>>
                 <br><br>
                 <label for="modelo">Modelo:</label>
                 <input value="<?php if (isset($modelo)) echo $modelo; ?>" class="entradas" id="entradas" name="modelo" type="text" placeholder="Introduzce el modelo">

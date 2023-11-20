@@ -1,0 +1,1 @@
+select * from Publicacion p join Tren t on p.trenId=t.trenId join Usuario u on u.email=p.email join Imagen i on i.pubId=p.pubId;
