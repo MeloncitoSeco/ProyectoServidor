@@ -18,8 +18,10 @@ $error = "Hay errores en: ";
 // TODO añadir titulo pub
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-
     
+
+
+
 
     if (@$_POST["modelo"] == "") {
         $error .=  "Rellenar el modelo ";
@@ -59,13 +61,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // TODO Sesion
     session_start();
     $sessionID = session_id();
-    $_SESSION['email']=$correo;
-    echo "El ID de la sesión actual es: $sessionID";
+    @$_SESSION['email'] = $email;
 
+    // Depuracion, guardado y recuperacion de archivos
+    $fotos = $_FILES['fotos'];
+    $dirFotos = [];
+    for ($i = 0; $i < count($fotos["name"]); $i++) {
+        $nombreFoto = $fotos["name"][$i];
+        $tipoFoto = $fotos["type"][$i];
+        $tmpName = $fotos["tmp_name"][$i];
+
+        if ($tipoFoto === "image/png") {
+            $nombreGuardado = "$sessionID-$i.png";
+            move_uploaded_file($tmpName, "fotos/" . $nombreGuardado);
+        }
+    }
+
+    // TODO HECHO Manejo errores
 
     if ($error != "Hay errores en: ") {
         @$modelo = $_POST["modelo"];
-
         @$email = $_POST["email"];
         @$contra = $_POST["contra"];
         @$slider = $_POST["slider"];
@@ -76,20 +91,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo "<script>alert('$error');</script>";
     } else {
         header("Location: contar.php");
-    }
-
-
-    // Depuracion, guardado y recuperacion de archivos
-    $fotos = $_FILES['fotos'];
-    $dirFotos = [];
-    for ($i = 0; $i < count($fotos["name"]); $i++) {
-        $nombreFoto = $fotos["name"][$i];
-        $tipoFoto = $fotos["type"][$i];
-        $tnpName = $fotos["tmp_name"][$i];
-
-        if ($tipoFoto === "image/jpg") {
-            ("$sesion/"."$i")
-        }
     }
 }
 
@@ -272,7 +273,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <body>
 
         <h1>Train 2 Daw</h1>
-        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
+        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST" enctype="multipart/form-data">
             <left>
                 <? //TODO hacer las subidas 
                 ?>
@@ -376,8 +377,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                                                                 } ?>>
 
                 <br>
-                <label for="fotos">Selecciona archivos JPG:</label>
-                <input type="file" name="fotos[]" class="margen" id="archivos" accept="image/png" multiple required>
+                <label for="fotos">Selecciona archivos png:</label>
+                <input type="file" name="fotos[]" class="margen" id="fotos" accept="image/png" multiple required>
+
 
             </left>
 

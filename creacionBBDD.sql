@@ -96,14 +96,18 @@ DEFAULT CHARACTER SET = utf8mb3;
 -- Table `servidor`.`Imagen`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `servidor`.`Imagen` (
-  `imgId` INT(10) NOT NULL AUTO_INCREMENT,
+  `imgId` INT NOT NULL AUTO_INCREMENT,
   `fecha` DATE NOT NULL,
-  `pubId` INT(10) NOT NULL,
+  `pubId` INT NOT NULL,
+  `sesion` VARCHAR(255) NULL,
+  `num` INT(10) NULL,
   PRIMARY KEY (`imgId`),
   INDEX `img-pub_idx` (`pubId` ASC) VISIBLE,
   CONSTRAINT `img-pub`
     FOREIGN KEY (`pubId`)
-    REFERENCES `servidor`.`Publicacion` (`pubId`))
+    REFERENCES `servidor`.`Publicacion` (`pubId`)
+    ON DELETE RESTRICT
+    ON UPDATE RESTRICT)
 ENGINE = InnoDB
 AUTO_INCREMENT = 3
 DEFAULT CHARACTER SET = utf8mb3;
