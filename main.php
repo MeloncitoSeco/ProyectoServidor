@@ -1,6 +1,7 @@
 <?php
 /* si va bien redirige a parametrosFormulario.php si va mal, mensaje de error */
 $ciudades = array();
+@session_destroy();
 function validarNombre($a)
 {
     trim($a);
@@ -18,8 +19,15 @@ $error = "Hay errores en: ";
 // TODO añadir titulo pub
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-    
 
+    @$modelo = $_POST["modelo"];
+    @$email = $_POST["email"];
+    @$contra = $_POST["contra"];
+    @$slider = $_POST["slider"];
+    @$tren = $_POST["tren"];
+    @$movimiento = $_POST["movimiento"];
+    @$comu = $_POST["comu"];
+    @$datos = $_POST["datos"];
 
 
 
@@ -62,6 +70,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     session_start();
     $sessionID = session_id();
     @$_SESSION['email'] = $email;
+    echo " __-$sessionID-__";
 
     // Depuracion, guardado y recuperacion de archivos
     $fotos = $_FILES['fotos'];
@@ -72,10 +81,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $tmpName = $fotos["tmp_name"][$i];
 
         if ($tipoFoto === "image/png") {
-            $nombreGuardado = "$sessionID-$i.png";
+            $nombreGuardado = "$sessionID-$email-$i.png";
             move_uploaded_file($tmpName, "fotos/" . $nombreGuardado);
         }
     }
+    session_destroy();
 
     // TODO HECHO Manejo errores
 
@@ -90,6 +100,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         @$datos = $_POST["datos"];
         echo "<script>alert('$error');</script>";
     } else {
+
         header("Location: contar.php");
     }
 }

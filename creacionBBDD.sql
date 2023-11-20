@@ -161,6 +161,7 @@ COMMIT;
 START TRANSACTION;
 USE `servidor`;
 INSERT INTO `servidor`.`Publicacion` (`pubId`, `email`, `trenId`, `titulo`, `posicion`, `comAuto`) VALUES (1, 'santiago@gmail.com', 1, 'Primer Civia', 'Quieto', 'Andalucía');
+INSERT INTO `servidor`.`Publicacion` (`pubId`, `email`, `trenId`, `titulo`, `posicion`, `comAuto`) VALUES (2, 'santiago@gmail.com', 1, 'Segundo Civia', 'Quieto', 'Asturias');
 
 COMMIT;
 
@@ -170,8 +171,17 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `servidor`;
-INSERT INTO `servidor`.`Imagen` (`imgId`, `fecha`, `pubId`) VALUES (1, '2003-12-11', 1);
-INSERT INTO `servidor`.`Imagen` (`imgId`, `fecha`, `pubId`) VALUES (2, '2003-12-11', 1);
+INSERT INTO `servidor`.`Imagen` ( `fecha`, `pubId`) VALUES ('2003-12-11', 1);
+INSERT INTO `servidor`.`Imagen` ( `fecha`, `pubId`) VALUES ('2003-12-11', 1);
+INSERT INTO `servidor`.`Imagen` ( `fecha`, `pubId`) VALUES ('2003-12-11', 2);
+INSERT INTO `servidor`.`Imagen` ( `fecha`, `pubId`) VALUES ('2003-12-11', 2);
+
+COMMIT;
+START TRANSACTION;
+USE `servidor`;
+INSERT INTO `servidor`.`Imagen` ( `fecha`, `pubId`, `sesion`, `num`) VALUES ('2023-11-11', 1, 'santi', 0);
+INSERT INTO `servidor`.`Imagen` ( `fecha`, `pubId`, `sesion`, `num`) VALUES ('2023-11-11', 1, 'santi', 2);
+INSERT INTO `servidor`.`Imagen` ( `fecha`, `pubId`, `sesion`, `num`) VALUES ('2023-10-10', 2, 'jose', 14);
 
 COMMIT;
 
