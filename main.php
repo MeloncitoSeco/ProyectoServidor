@@ -53,7 +53,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if ($error != "Hay errores en: ") {
         @$nombre = $_POST["nombre"];
+        
         @$email = $_POST["email"];
+        @$contra = $_POST["contra"];
         @$slider = $_POST["slider"];
         @$tren = $_POST["tren"];
         @$movimiento = $_POST["movimiento"];
@@ -234,15 +236,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
         <left>
 
-            <h3>CAMPOS DE TEXTO:</h3>
+            <h3>Usuario:</h3>
             <label for="nombre">Nombre de usuario:</label>
-            <input value="<?php if (isset($nombre)) echo $nombre; ?>" class="entradas" id="entradas" name="nombre" type="text" placeholder="Inserte su nombre">
+            <input value="<?php if (isset($nombre)) echo $nombre; ?>" class="entradas" id="entradas" name="nombre" type="text" placeholder="Introduzca su nombre">
             <br><br>
             <label for="email">Email:</label>
-            <input value="<?php if (isset($email)) echo $email; ?>" id="entradas" name="email" type="email" class="margen" placeholder="Inserte su email">
+            <input value="<?php if (isset($email)) echo $email; ?>" id="entradas" name="email" type="email" class="margen" placeholder="Introduzca su email">
+            <br><br>
+            <label for="contra">Contraseña:</label>
+            <input value="<?php if (isset($contra)) echo $contra; ?>" id="entradas" name="contra" type="password" class="margen" placeholder="Introduzca su contraseña">
+
+
 
             <br>
-            <label for="slider" class="espacio">Edad de fabricacion</label>
+            <label for="slider" class="espacio">Fecha de fabricacion</label>
             <input type="range" id="slider" name="slider" class="margen" min="1950" max="2023" step="1" value="<?php if (isset($slider)) {
                                                                                                     echo $slider;
                                                                                                 } else {
@@ -322,8 +329,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                                             } else {
                                                                 echo "2023";
                                                             } ?>>
-            <label for="archivos" class="espacio">Selecciona archivos PNG y JPG:</label>
-            <input type="file" name="archivos[]" class="margen" id="archivos" accept=".png, .jpg" multiple>
+            <label for="archivos" class="espacio">Selecciona archivos JPG:</label>
+            <input type="file" name="archivos[]" class="margen" id="archivos" accept="image/jpeg" multiple>
 
         </left>
         <p> <input type="submit"class ="margenDerecha"></p>
