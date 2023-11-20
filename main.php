@@ -12,10 +12,14 @@ function validarNombre($a)
 }
 
 
+
 $error = "Hay errores en: ";
 // TODO Validar entradas de fotos
 // TODO añadir titulo pub
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+
+    
 
     if (@$_POST["modelo"] == "") {
         $error .=  "Rellenar el modelo ";
@@ -52,6 +56,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
 
+    // TODO Sesion
+    session_start();
+    $sessionID = session_id();
+    $_SESSION['email']=$correo;
+    echo "El ID de la sesión actual es: $sessionID";
+
+
     if ($error != "Hay errores en: ") {
         @$modelo = $_POST["modelo"];
 
@@ -66,8 +77,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } else {
         header("Location: contar.php");
     }
+
+
+    // Depuracion, guardado y recuperacion de archivos
+    $fotos = $_FILES['fotos'];
+    $dirFotos = [];
+    for ($i = 0; $i < count($fotos["name"]); $i++) {
+        $nombreFoto = $fotos["name"][$i];
+        $tipoFoto = $fotos["type"][$i];
+        $tnpName = $fotos["tmp_name"][$i];
+
+        if ($tipoFoto === "image/jpg") {
+            ("$sesion/"."$i")
+        }
+    }
 }
-// 
+
 ?>
 
 <! //TODO limpiar todos los formatos que no sirven>
@@ -87,7 +112,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
 
-            
+
 
 
             h1 {
@@ -351,12 +376,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                                                                 } ?>>
 
                 <br>
-                <label for="archivos">Selecciona archivos JPG:</label>
-                <input type="file" name="archivos[]" class="margen" id="archivos" accept="image/jpeg" multiple>
+                <label for="fotos">Selecciona archivos JPG:</label>
+                <input type="file" name="fotos[]" class="margen" id="archivos" accept="image/png" multiple required>
 
             </left>
 
-            
+
             <p> <input type="submit" class="margenDerecha"></p>
             <br><br>
 
