@@ -5,7 +5,7 @@ $usuario = 'visual';
 $clave = 'daw2324';
 
 $sqlTipoTren; // sen 1 id del tren de abajo
-$inputTipoTren = 'Avant';
+$inputTipoTren = 'AVE';
 
 $sqlTren; // sen 2 id del ultimo tren subido
 
@@ -34,7 +34,7 @@ try {
         if($stmt->execute()){
             $stmt->bind_result($sqlTipoTren);
             $stmt->fetch();
-            echo "$sqlTipoTren <br>";
+            echo "$sqlTipoTren a <br>";
             $stmt->free_result();
         }
     }
