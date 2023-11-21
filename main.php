@@ -1,7 +1,6 @@
 <?php
 /* si va bien redirige a parametrosFormulario.php si va mal, mensaje de error */
-$ciudades = array();
-@session_destroy();
+
 function validarNombre($a)
 {
     trim($a);
@@ -11,12 +10,17 @@ function validarNombre($a)
         return (false);
     return (true);
 }
+// TODO Datos entrada mysql VVV
+
+$host = "127.0.0.1";
+$tabla = "servidor";
+$usuario = 'visual';
+$clave = 'daw2324';
 
 
-
-$error = "Hay errores en: ";
 // TODO Validar entradas de fotos
 // TODO añadir titulo pub
+$error = "Hay errores en: ";
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     @$modelo = $_POST["modelo"];
     @$email = $_POST["email"];
@@ -54,13 +58,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (@$_POST["datos"] == "") {
         $error .= " y datos ";
     }
-    // TODO Sesion
+    // TODO Sesion   VVV
     session_start();
     $sessionID = session_id();
     @$_SESSION['email'] = $email;
-    echo " __-$sessionID-__";
 
-    // Depuracion, guardado y recuperacion de archivos
+    // TODO Depuracion, guardado y recuperacion de archivos
     $fotos = $_FILES['fotos'];
     $dirFotos = [];
     for ($i = 0; $i < count($fotos["name"]); $i++) {
@@ -69,7 +72,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $tmpName = $fotos["tmp_name"][$i];
 
         if ($tipoFoto === "image/png") {
-            $nombreGuardado = "$sessionID-$email-$i.png";
+            $nombreGuardado = "$sessionID-$i.png";
             move_uploaded_file($tmpName, "fotos/" . $nombreGuardado);
         }
     }
@@ -87,15 +90,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         @$comu = $_POST["comu"];
         @$datos = $_POST["datos"];
         echo "<script>alert('$error');</script>";
-    } else {
+    } else { // si no hay errores lñega hasta aqui y ahora vamos a introducir los datos
 
-        header("Location: contar.php");
+        try {
+            $mysqli = new mysqli($host, $usuario, $clave, $tabla);
+            if ($mysqli->connect_error) {
+                die("Error de conexión: " . $mysqli->connect_error);
+                echo "error";
+            }
+        } catch (Exception $e) {
+            echo 'Error: ' . $e->getMessage();
+        }
+
+        echo "LLeago"; // TODO BORRAR ESTO
+
+        //header("Location: contar.php");
     }
 }
 
 ?>
 
-<! //TODO limpiar todos los formatos que no sirven>
+<! //TODO limpiar todos los formatos que no sirven VV>
     <!DOCTYPE html>
     <html>
 
@@ -104,7 +119,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <title>Repintar formulario</title>
         <meta charset="UTF-8">
         <link rel="stylesheet" href="./style.css">
-        
+
     </head>
 
     <body>
@@ -116,10 +131,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 ?>
                 <h3>Usuario:</h3>
                 <label for="email">Email:</label>
-                <input value="<?php if (isset($email)) echo $email; ?>" id="entradas" name="email" type="email" class="margen" placeholder="Introduzca su email">
+                <input value="<?php if (isset($email)) echo $email; ?>" id="entradas" name="email" type="email" class="margen" placeholder="Introduzca su email" required>
                 <br><br>
                 <label for="contra">Contraseña:</label>
-                <input value="<?php if (isset($contra)) echo $contra; ?>" id="entradas" name="contra" type="password" class="margen" placeholder="Introduzca su contraseña">
+                <input value="<?php if (isset($contra)) echo $contra; ?>" id="entradas" name="contra" type="password" class="margen" placeholder="Introduzca su contraseña" required>
 
 
 
@@ -160,11 +175,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 AM<input type="radio" class="margen" id="trenes" name="tren" value="9" <?php if (isset($tren) && $tren === "am") echo "9"; ?>>
                 <br><br>
                 <label for="modelo">Modelo:</label>
-                <input value="<?php if (isset($modelo)) echo $modelo; ?>" class="entradas" id="entradas" name="modelo" type="text" placeholder="Introduzce el modelo">
+                <input value="<?php if (isset($modelo)) echo $modelo; ?>" class="entradas" id="entradas" name="modelo" type="text" placeholder="Introduzce el modelo" required>
 
                 <br><br>
                 <label for="movimiento">Posicion:</label>
-                <select class="mov" name="movimiento">
+                <select class="mov" name="movimiento" required>
 
                     <option value="quieto" <?php if (isset($movimiento) && $movimiento === "quieto") echo "selected"; ?>>Quieto</option>
                     <option value="moviendo" <?php if (isset($movimiento) && $movimiento === "moviendo") echo "selected"; ?>>Movimiento</option>
@@ -175,7 +190,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <br><br>
 
                 <label for="birthdaytime">Fecha de foto:</label>
-                <input type="datetime-local" id="fecha" name="fecha" max="<?= date('Y-m-d\TH:i'); ?>" value="<?php if (isset($fecha)) echo $fecha; ?>">
+                <input type="datetime-local" id="fecha" name="fecha" max="<?= date('Y-m-d\TH:i'); ?>" value="<?php if (isset($fecha)) echo $fecha; ?>" required>
 
 
                 <br><br>
@@ -183,7 +198,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 <label for="comu">Donde sacaste la foto</label>
 
-                <select class="comu" name="comu" id="comu">
+                <select class="comu" name="comu" id="comu" required>
 
                     <option value="Andalucía" <?php if (isset($comunidad_autonoma) && $comunidad_autonoma === "Andalucía") echo "selected"; ?>>Andalucía</option>
                     <option value="Aragón" <?php if (isset($comunidad_autonoma) && $comunidad_autonoma === "Aragón") echo "selected"; ?>>Aragón</option>
@@ -210,20 +225,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 <br><br>
                 <label for="fotos">Selecciona archivos png:</label>
-                <input type="file" name="fotos[]" class="margen" display= "block" id="fotos" accept="image/png" multiple required>
+                <input type="file" name="fotos[]" class="margen" display="block" id="fotos" accept="image/png" multiple required>
                 <br>
                 <label for="publicidad" class="margen">Aceptas los terminos y condiciones</label>
+
                 <input type="checkbox" id="datos" name="datos" class="margen" <?php if (isset($datos)) {
                                                                                     echo "checked";
                                                                                 } else {
                                                                                     echo "2023";
                                                                                 } ?>>
+                
 
 
             </left>
 
 
-            <p> <input type="submit" class="margenDerecha"></p>
+            <p> <input type="submit" class="btn"></p>
+
+
+
             <br><br>
 
 

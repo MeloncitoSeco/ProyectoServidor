@@ -1,3 +1,5 @@
+
+
 -- MySQL Workbench Forward Engineering
 
 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
@@ -163,14 +165,6 @@ COMMIT;
 -- -----------------------------------------------------
 -- Data for table `servidor`.`Imagen`
 -- -----------------------------------------------------
-START TRANSACTION;
-USE `servidor`;
-INSERT INTO `servidor`.`Imagen` ( `fecha`, `pubId`) VALUES ('2003-12-11', 1);
-INSERT INTO `servidor`.`Imagen` ( `fecha`, `pubId`) VALUES ('2003-12-11', 1);
-INSERT INTO `servidor`.`Imagen` ( `fecha`, `pubId`) VALUES ('2003-12-11', 2);
-INSERT INTO `servidor`.`Imagen` ( `fecha`, `pubId`) VALUES ('2003-12-11', 2);
-
-COMMIT;
 START TRANSACTION;
 USE `servidor`;
 INSERT INTO `servidor`.`Imagen` ( `fecha`, `pubId`, `sesion`, `num`) VALUES ('2023-11-11', 1, 'santi', 0);
