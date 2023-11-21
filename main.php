@@ -63,6 +63,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $sessionID = session_id();
     @$_SESSION['email'] = $email;
 
+
+
+
+
+
+
+
+
+
+    
+
     // TODO Depuracion, guardado y recuperacion de archivos
     $fotos = $_FILES['fotos'];
     $dirFotos = [];

@@ -5,14 +5,14 @@ $usuario = 'visual';
 $clave = 'daw2324';
 
 $sqlTipoTren; // sen 1 id del tren de abajo
-$inputTipoTren = 'AVE';
+$inputTipoTren = 'Alvia';
 
 $sqlTren; // sen 2 id del ultimo tren subido
 
-$sqlPubId;// sen 3 id ultima publicacion
+$sqlPubId; // sen 3 id ultima publicacion
 
 
-$sqlExisteUser;// sen 4   sacar si existe esa persona en booleano
+$sqlExisteUser; // sen 4   sacar si existe esa persona en booleano
 $inputExisteUser = "santiago@gmail.com";
 
 
@@ -30,20 +30,20 @@ try {
     $consulta = "SELECT tipoTren FROM tipoTren WHERE nombre = ?";
     if ($stmt = $mysqli->prepare($consulta)) {
 
-        $stmt->bind_param('s', $nombreTipoTren);
-        if($stmt->execute()){
+        $stmt->bind_param('s', $inputTipoTren);
+        if ($stmt->execute()) {
             $stmt->bind_result($sqlTipoTren);
             $stmt->fetch();
-            echo "$sqlTipoTren a <br>";
+            echo "$sqlTipoTren <br>";
             $stmt->free_result();
         }
     }
 
     // Sacar ultimo tren // TODO sen 2
-    $consulta_sacarId = "SELECT max(trenId) FROM tren";
+    $consulta_sacarId = "SELECT max(trenId) FROM tren limit 1";
     if ($stmt = $mysqli->prepare($consulta_sacarId)) {
 
-        if($stmt->execute()){
+        if ($stmt->execute()) {
             $stmt->bind_result($sqlTren);
             $stmt->fetch();
             $stmt->free_result();
@@ -51,10 +51,10 @@ try {
         }
     }
 
-     // Sacar ultima pub // TODO sen 3
-    $consulta = "SELECT max(pubId) FROM publicacion";
+    // Sacar ultima pub // TODO sen 3
+    $consulta = "SELECT max(pubId) FROM publicacion limit 1";
     if ($stmt = $mysqli->prepare($consulta)) {
-        if($stmt->execute()){
+        if ($stmt->execute()) {
             $stmt->bind_result($sqlPubId);
             $stmt->fetch();
             echo "$sqlPubId <br>";
@@ -65,11 +65,11 @@ try {
 
     //sqlExisteUser // TODO sen 4
     $consulta = " SELECT COUNT( email) > 0 FROM usuario WHERE email=? limit 1";
-   
+
     if ($stmt = $mysqli->prepare($consulta)) {
 
         $stmt->bind_param('s', $inputExisteUser);
-        if($stmt->execute()){
+        if ($stmt->execute()) {
             $stmt->bind_result($sqlExisteUser);
             $stmt->fetch();
             $stmt->free_result();
@@ -77,17 +77,42 @@ try {
         }
     }
 
+
+
+
+    //PREPARACION DE DATOS
+
+
+
+    $stmt = $mysqli->prepare("INSERT INTO Tren (trenId, modelo, tipoTren, fechaFabricacion) VALUES (?, ?, ?, ?)");
+    //$stmt->bind_param("isii" );
+    $stmt->execute();
+    
+    $stmt = $mysqli->prepare("INSERT INTO Usuario (email, contra) VALUES (?, ?)");
+    //$stmt->bind_param("is" );
+    $stmt->execute();
+    
+    $stmt = $mysqli->prepare("INSERT INTO Publicacion (pubId, email, trenId, titulo, posicion, comAuto) VALUES (?, ?, ?, ?, ?, ?)");
+    //$stmt->bind_param("isii" );
+    $stmt->execute();
+
+    $stmt = $mysqli->prepare("INSERT INTO Imagen (fecha, pubId, sesion, num) VALUES (?, ?, ?, ?)");
+    //$stmt->bind_param("isii" );
+    $stmt->execute();
+
+
+    
 } catch (Exception $e) {
     echo 'Error: ' . $e->getMessage();
 }
-/** INSERT INTO `servidor`.`tipoTren` (`tipoTren`, `nombre`) VALUES (1, 'Ave');
+ //INSERT INTO `servidor`.`tipoTren` (`tipoTren`, `nombre`) VALUES (1, 'Ave');
 
-INSERT INTO `servidor`.`Tren` (`trenId`, `modelo`, `tipoTren`, `fechaFabricacion`) VALUES (1, 'Civia', 6, 2003);
+//INSERT INTO `servidor`.`Tren` (`trenId`, `modelo`, `tipoTren`, `fechaFabricacion`) VALUES (1, 'Civia', 6, 2003);
 
-INSERT INTO `servidor`.`Usuario` (`email`, `contra`) VALUES ('santiago@gmail.com', '12345');
+//INSERT INTO `servidor`.`Usuario` (`email`, `contra`) VALUES ('santiago@gmail.com', '12345');
 
-INSERT INTO `servidor`.`Publicacion` (`pubId`, `email`, `trenId`, `titulo`, `posicion`, `comAuto`) VALUES (1, 'santiago@gmail.com', 1, 'Primer Civia', 'Quieto', 'Andalucía');
+//INSERT INTO `servidor`.`Publicacion` (`pubId`, `email`, `trenId`, `titulo`, `posicion`, `comAuto`) VALUES (1, 'santiago@gmail.com', 1, 'Primer Civia', 'Quieto', 'Andalucía');
 
-INSERT INTO `servidor`.`Imagen` ( `fecha`, `pubId`, `sesion`, `num`) VALUES ('2023-11-11', 1, 'santi', 0);
+//INSERT INTO `servidor`.`Imagen` ( `fecha`, `pubId`, `sesion`, `num`) VALUES ('2023-11-11', 1, 'santi', 0);
 
- */
+ 
