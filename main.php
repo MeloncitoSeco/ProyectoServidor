@@ -115,170 +115,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         <title>Repintar formulario</title>
         <meta charset="UTF-8">
-
-        <style>
-            @font-face {
-                font-family: 'Black Future';
-                src: 'black-future.woff2' format('otf');
-            }
-
-
-
-
-
-
-            h1 {
-                display: inline-block;
-                color: #000;
-                background: #fff;
-                mix-blend-mode: multiply;
-                position: relative;
-            }
-
-            h1:before {
-                content: '';
-                display: block;
-                width: 100%;
-                height: 100%;
-                background: linear-gradient(to right, #81005E, #003380);
-                mix-blend-mode: screen;
-                text-align: center;
-                position: absolute;
-                top: 0;
-                left: 0;
-            }
-
-
-            body {
-                background-image: url('tren2.jpg');
-                background-repeat: no-repeat;
-                background-attachment: fixed;
-                background-size: 100% 100%;
-                opacity: 1;
-            }
-
-            center {
-                text-align: center;
-            }
-
-            right {
-                text-align: right;
-            }
-
-            #visor_imagenes {
-                text-align: center;
-            }
-
-
-            form {
-                border-radius: 4px;
-                margin-left: 6px;
-                background: linear-gradient(120deg, #81005E, #2b598d);
-                width: 30%;
-                min-width: 400px;
-                max-width: 1500px;
-                padding-bottom: 10px;
-                color: #FFFFFF;
-                border-radius: 10px;
-                /* Color de texto blanco */
-            }
-
-            label {
-                margin-left: 6px;
-                margin-top: 10px;
-            }
-
-            .espacio {
-                display: block;
-            }
-
-            .margen {
-                margin-left: 6px;
-            }
-
-            .mov {
-                margin-left: 6px;
-                width: 100px;
-            }
-
-            .comu {
-                margin-left: 6px;
-                width: 180px;
-            }
-
-            input[type="text"],
-            .entradas {
-                margin-left: 6px;
-                width: 33%;
-                min-width: 100px;
-            }
-
-
-
-
-            input[type="range"] {
-                margin-left: 6px;
-                width: 70%;
-            }
-
-            select {
-                margin-left: 6px;
-                width: 80px;
-                padding: 3px;
-                border-radius: 3px;
-            }
-
-            input[type="radio"] {
-                margin-left: 6px;
-                margin-right: 5px;
-            }
-
-            h3 {
-                margin-left: 6px;
-            }
-
-            input[type="submit"] {
-                margin-left: 6px;
-                background-color: #81005E;
-                color: #fff;
-                padding: 10px 20px;
-                border: none;
-                border-radius: 3px;
-                cursor: pointer;
-                float: right;
-                margin-left: 20px;
-            }
-
-            input[type="checkbox"] {
-                margin-left: 6px;
-                margin-right: 5px;
-                padding: 10px 20px;
-            }
-
-            h3 {
-
-                margin-left: 10px;
-            }
-
-            p {
-                margin-left: 10px;
-            }
-
-            .margenDerecha {
-                margin-right: 15px;
-            }
-
-            p {
-                margin-left: 6px;
-                color: #FFFFFF;
-                font-weight: bold;
-                margin-top: 10px;
-            }
-
-            .margen-izquierdo-10px {
-                margin-left: 10px;
-            }
-        </style>
+        <link rel="stylesheet" href="./style.css">
+        
     </head>
 
     <body>
@@ -352,8 +190,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <input type="datetime-local" id="fecha" name="fecha" max="<?= date('Y-m-d\TH:i'); ?>" value="<?php if (isset($fecha)) echo $fecha; ?>">
 
 
-                <br>
-                <p>Donde sacaste la foto </p>
+                <br><br>
+
+
+                <label for="comu">Donde sacaste la foto</label>
 
                 <select class="comu" name="comu" id="comu">
 
@@ -379,6 +219,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
 
+
+                <br><br>
+                <label for="fotos">Selecciona archivos png:</label>
+                <input type="file" name="fotos[]" class="margen" display= "block" id="fotos" accept="image/png" multiple required>
                 <br>
                 <label for="publicidad" class="margen">Aceptas los terminos y condiciones</label>
                 <input type="checkbox" id="datos" name="datos" class="margen" <?php if (isset($datos)) {
@@ -386,10 +230,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                                                                 } else {
                                                                                     echo "2023";
                                                                                 } ?>>
-
-                <br>
-                <label for="fotos">Selecciona archivos png:</label>
-                <input type="file" name="fotos[]" class="margen" id="fotos" accept="image/png" multiple required>
 
 
             </left>
