@@ -18,8 +18,6 @@ $error = "Hay errores en: ";
 // TODO Validar entradas de fotos
 // TODO añadir titulo pub
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-
-
     @$modelo = $_POST["modelo"];
     @$email = $_POST["email"];
     @$contra = $_POST["contra"];
@@ -28,7 +26,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     @$movimiento = $_POST["movimiento"];
     @$comu = $_POST["comu"];
     @$datos = $_POST["datos"];
-
 
 
     if (@$_POST["modelo"] == "") {
@@ -42,30 +39,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } elseif (!filter_var($_POST["email"], FILTER_VALIDATE_EMAIL)) {
         $error .=  ", email";
     }
-
     if (@$_POST["slider"] == "") {
         $error .=  ", el slider es obligatorio";
     }
-
     if (@$_POST["tren"] == "") {
         $error .= ", el tren es obligatorio";
     }
-
-
     if (@$_POST["movimiento"] == "") {
         $error .=  " , el movimiento es obligatorio";
     }
-
-
     if (@$_POST["comu"] == "") {
         $error .= ", la comunidad";
     }
-
     if (@$_POST["datos"] == "") {
         $error .= " y datos ";
     }
-
-
     // TODO Sesion
     session_start();
     $sessionID = session_id();
