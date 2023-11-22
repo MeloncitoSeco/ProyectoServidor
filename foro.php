@@ -17,16 +17,20 @@
         h3 {
             color: white;
         }
-        .foroTitulo {
-            background-color: #f0f0f0;
-            border: 1px solid #ccc;
+        /** //TODO formato titulo */
+        .foroTitulo { 
+            background: linear-gradient(120deg, #81005e, #2b598d);;
+            border: 1px solid #ffffff;
             border-radius: 8px;
             height: auto;
-            max-width: 50%;
+            max-width: 30%; 
+            min-width: 10%;
+            position: relative;
             padding: 20px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             flex-direction: row;
-            margin: 20px auto;
+            margin: 10px ;
+            display: inline-block;
         }
 
         .foro {
@@ -34,13 +38,14 @@
             border: 1px solid #ccc;
             border-radius: 8px;
             height: auto;
-            max-width: 50%;
+            max-width: 50%; 
             min-width: 20%;
             position: relative;
             padding: 20px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             flex-direction: row;
-            margin: 20px auto;
+            margin: 10px ;
+            display: inline-block;
         }
 
         /* Estilos del texto dentro del div */
@@ -48,14 +53,30 @@
             color: #333;
             font-size: 16px;
             line-height: 1.5;
+            padding-left: 30px;
+            flex-direction: row;
+            display: inline-block;
+        }
+        .foro h5 {
+            color: #333;
+            font-size: 16px;
+            line-height: 1.5;
+            padding-left: 30px;
+            flex-direction: row;
+            display: inline-block;
         }
 
+        
         .imagen{
             max-width: 90%;
             max-height: 500px;
             flex-direction: row;
             padding: 10px;
 
+        }
+        .dato{
+            font-weight: bold;
+            padding-left: 5px;
         }
 
     </style>
@@ -100,20 +121,26 @@ try {
 
         foreach ($pubId as $key => $value) {
 
-            echo "<br><h3>$titulo[$key]</h3>";
+            echo "<br><div class = \"foroTitulo\"><h3>$titulo[$key]</h3></div><br>";
             echo "<div class=\"foro\">";
-            $consulta = "SELECT i.imgId from Imagen i where pubId=$value order by imgId asc ";
+
+            echo"<p>Modelo: $modelo[$key]</p><p>Tipo: $modelo[$key]</p><br>";
+            echo"<p>Estaba: $posicion[$key]</p><p>Del anio: $fechaFabricacion[$key]</p><br>";
+            $consulta = "SELECT * from Imagen i where pubId=$value order by imgId asc ";
             $result = $mysqli->query($consulta);
             while ($row = $result->fetch_assoc()) {
                 // TODO Aqui hay que poner para que muestre las fotos teniendo sus id`s  VVV
                 $salida = $row['imgId'];
+                $fechaFoto = $row['fecha'];
                 $rutaImagen = "fotos/". $salida.".png"; 
                 if (file_exists($rutaImagen)) {
                     echo '<img class= imagen src="' . $rutaImagen . '" alt="Imagen" >';
                 }
+
             }
+            echo"<br><p>Fecha de la foto: $fechaFoto</p><br>";
+            echo"<p>Creador: $email[$key]</p><p>Foto tomada en: $comAuto[$key]</p><br>";
             echo "</div><br>";
-            echo $modelo[$key] . ' => ' . $value . '<br>';
         }
     }
 
