@@ -137,6 +137,7 @@ COMMIT;
 START TRANSACTION;
 USE `servidor`;
 INSERT INTO `servidor`.`Tren` (`trenId`, `modelo`, `tipoTren`, `fechaFabricacion`) VALUES (1, 'Civia', 6, 2003);
+INSERT INTO `servidor`.`Tren` (`trenId`, `modelo`, `tipoTren`, `fechaFabricacion`) VALUES (2, 'IRYO', 4, 2020);
 
 COMMIT;
 
@@ -157,6 +158,7 @@ COMMIT;
 START TRANSACTION;
 USE `servidor`;
 INSERT INTO `servidor`.`Publicacion` (`pubId`, `email`, `trenId`, `titulo`, `posicion`, `comAuto`) VALUES (1, 'santiago@gmail.com', 1, 'Primer Civia', 'Quieto', 'Andalucía');
+INSERT INTO `servidor`.`Publicacion` (`pubId`, `email`, `trenId`, `titulo`, `posicion`, `comAuto`) VALUES (2, 'santiago@gmail.com', 2, 'Iryo', 'Quieto', 'Navarra');
 COMMIT;
 
 
@@ -166,6 +168,8 @@ COMMIT;
 START TRANSACTION;
 USE `servidor`;
 INSERT INTO `servidor`.`imagen` (`imgId`, `fecha`, `pubId`, `sesion`, `num`) VALUES (10, '2013-03-20 19:56:00', 1, 'rth65ufgh', 1);
+INSERT INTO `servidor`.`imagen` (`imgId`, `fecha`, `pubId`, `sesion`, `num`) VALUES (11, '2022-04-20 19:56:00', 2, 'rth65ufgh', 1);
+INSERT INTO `servidor`.`imagen` (`imgId`, `fecha`, `pubId`, `sesion`, `num`) VALUES (12, '2022-04-20 19:56:00', 2, 'rth65ufgh', 1);
 
 
 COMMIT;

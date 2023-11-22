@@ -7,85 +7,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="./style2.css">
     <style>
        
-        body {
-            background-color: #f0f0f0;
-        }
-
-        h3 {
-            color: white;
-        }
-        /** //TODO formato titulo */
-        .foroTitulo { 
-            background: linear-gradient(120deg, #81005e, #2b598d);;
-            border: 1px solid #ffffff;
-            border-radius: 8px;
-            height: auto;
-            max-width: 30%; 
-            min-width: 10%;
-            position: relative;
-            padding: 20px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            flex-direction: row;
-            margin: 10px ;
-            display: inline-block;
-        }
-
-        .foro {
-            background-color: #f0f0f0;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            height: auto;
-            max-width: 50%; 
-            min-width: 20%;
-            position: relative;
-            padding: 20px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            flex-direction: row;
-            margin: 10px ;
-            display: inline-block;
-        }
-
-        /* Estilos del texto dentro del div */
-        .foro p {
-            color: #333;
-            font-size: 16px;
-            line-height: 1.5;
-            padding-left: 30px;
-            flex-direction: row;
-            display: inline-block;
-        }
-        .foro h5 {
-            color: #333;
-            font-size: 16px;
-            line-height: 1.5;
-            padding-left: 30px;
-            flex-direction: row;
-            display: inline-block;
-        }
-
         
-        .imagen{
-            max-width: 90%;
-            max-height: 500px;
-            flex-direction: row;
-            padding: 10px;
-
-        }
-        .dato{
-            font-weight: bold;
-            padding-left: 5px;
-        }
-
     </style>
     
 
 </head>
 
 <body>
-
+<h1 >Train 2 Daw</h1> <p><a href="main.php"> Volver</a></p>
 <?php
 // TODO Datos entrada mysql VVV
 
