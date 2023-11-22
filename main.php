@@ -40,8 +40,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if (@$_POST["titulo"] == "") {
         $error .=  "Rellenar el titulo ";
-    } elseif (!validarNombre($_POST["titulo"])) {
-        $error .=  "titulo";
     }
 
 
@@ -246,9 +244,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             echo 'Error: ' . $e->getMessage();
         }
 
-        // TODO BORRAR ESTO y poner lo de abajo
+        
 
-        //header("Location: contar.php");
+        header("Location: foro.php");
     }
 }
 
