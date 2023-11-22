@@ -1,3 +1,70 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./style.css">
+    <style>
+       
+        body {
+            background-color: #f0f0f0;
+        }
+
+        h3 {
+            color: white;
+        }
+        .foroTitulo {
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            height: auto;
+            max-width: 50%;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            flex-direction: row;
+            margin: 20px auto;
+        }
+
+        .foro {
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            height: auto;
+            max-width: 50%;
+            min-width: 20%;
+            position: relative;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            flex-direction: row;
+            margin: 20px auto;
+        }
+
+        /* Estilos del texto dentro del div */
+        .foro p {
+            color: #333;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+
+        .imagen{
+            max-width: 90%;
+            max-height: 500px;
+            flex-direction: row;
+            padding: 10px;
+
+        }
+
+    </style>
+    
+
+</head>
+
+<body>
+
 <?php
 // TODO Datos entrada mysql VVV
 
@@ -14,7 +81,7 @@ try {
         echo "error";
     }
 
-    
+
 
 
     $consulta = "SELECT * FROM Publicacion p  join Tren t on p.trenId=t.trenId join Usuario u on u.email=p.email  join tipoTren tt on tt.tipoTren = t.tipoTren order by pubId asc ";
@@ -29,93 +96,32 @@ try {
             $fechaFabricacion[] = $row['fechaFabricacion'];
             $email[] = $row['email'];
             $comAuto[] = $row['comAuto'];
-
-
         }
 
         foreach ($pubId as $key => $value) {
-            echo "<div class='caja'>";
-            echo"<br>$titulo[$key] / $modelo[$key] ::::";
+
+            echo "<br><h3>$titulo[$key]</h3>";
+            echo "<div class=\"foro\">";
             $consulta = "SELECT i.imgId from Imagen i where pubId=$value order by imgId asc ";
             $result = $mysqli->query($consulta);
             while ($row = $result->fetch_assoc()) {
-                // TODO Aqui hay que poner para que muestre las fotos teniendo sus id`s
+                // TODO Aqui hay que poner para que muestre las fotos teniendo sus id`s  VVV
                 $salida = $row['imgId'];
-                echo "$salida <br>";
-                
+                $rutaImagen = "fotos/". $salida.".png"; 
+                if (file_exists($rutaImagen)) {
+                    echo '<img class= imagen src="' . $rutaImagen . '" alt="Imagen" >';
+                }
             }
-            echo "<br>";
+            echo "</div><br>";
             echo $modelo[$key] . ' => ' . $value . '<br>';
-            echo "</div>";
-
         }
     }
 
-    
-    
-
-    // For each para el pintado de datos
-    /*foreach ($pubId as  $value) {
-        $consulta = "SELECT * from Publicacion p  join Tren t on p.trenId=t.trenId join Usuario u on u.email=p.email  join tipoTren tt on tt.tipoTren = t.tipoTren order by pubId asc";
-        if ($stmt = $mysqli->prepare($consulta)) {
-            if ($stmt->execute()) {
-                $stmt->bind_result($sqlTipoTren);
-                $stmt->fetch();
-                $stmt->free_result();
-            }
-        }
-        echo  $value . '<br>';
-    }
- echo "<br>_____________<br>";
-    foreach ($correoUsu as  $value) {
-        $consulta = "SELECT * from Publicacion p  join Tren t on p.trenId=t.trenId join Usuario u on u.email=p.email  join tipoTren tt on tt.tipoTren = t.tipoTren order by pubId asc";
-        if ($stmt = $mysqli->prepare($consulta)) {
-
-            $stmt->bind_param('s', $nombreTipoTren);
-            if ($stmt->execute()) {
-                $stmt->bind_result($sqlTipoTren);
-                $stmt->fetch();
-                $stmt->free_result();
-            }
-        }
-        echo  $value . '<br>';
-
-
-    }*/
-
-
-    /*
-// Primer intento
- if ($stmt = $mysqli->prepare($consulta)) {
-     if ($stmt->execute()) {
-         $stmt->bind_result($brutoPubs);
-         $stmt->fetch();
-         if ($brutoPubs) {
-            while($row = $brutoPubs){
-                $salida[]= $row['pubId'];
-            }
-            print_r($salida);
-         }
-         
-         $stmt->free_result();
-         echo "$salida <br>";
-     }
- }*/
 } catch (Exception $e) {
     echo 'Error: ' . $e->getMessage();
 }
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="./style.css">
-
-</head>
-<body>
-    
 </body>
+
 </html>
