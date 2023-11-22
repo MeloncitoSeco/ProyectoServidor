@@ -132,7 +132,7 @@ try {
                 // TODO Aqui hay que poner para que muestre las fotos teniendo sus id`s  VVV
                 $salida = $row['imgId'];
                 $fechaFoto = $row['fecha'];
-                $rutaImagen = "fotos/". $salida.".png"; 
+                $rutaImagen = "fotos/". $salida.".jpg"; 
                 if (file_exists($rutaImagen)) {
                     echo '<img class= imagen src="' . $rutaImagen . '" alt="Imagen" >';
                 }
