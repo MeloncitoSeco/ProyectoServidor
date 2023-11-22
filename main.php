@@ -186,7 +186,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $tipoFoto = $fotos["type"][$i];
             $tmpName = $fotos["tmp_name"][$i];
 
-            if ($tipoFoto === "image/jpg") {
+            if ($tipoFoto === "image/png") {
                 $consulta = " SELECT max(imgId) FROM imagen";
 
                 if ($stmt = $mysqli->prepare($consulta)) {
@@ -199,7 +199,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 }
 
 
-                $nombreGuardado = "$sqlLastIdImg.jpg";
+                $nombreGuardado = "$sqlLastIdImg.png";
                 move_uploaded_file($tmpName, "fotos/" . $nombreGuardado);
                 //insertar datos fotos
 
@@ -372,8 +372,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
                 <br><br>
-                <label for="fotos">Selecciona archivos jpg:</label>
-                <input type="file" name="fotos[]" class="margen" display="block" id="fotos" accept="image/jpg" multiple required>
+                <label for="fotos">Selecciona archivos png:</label>
+                <input type="file" name="fotos[]" class="margen" display="block" id="fotos" accept="image/png" multiple required>
                 <br>
                 <label for="publicidad" class="margen">Aceptas los terminos y condiciones</label>
 
