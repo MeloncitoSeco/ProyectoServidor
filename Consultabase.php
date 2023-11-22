@@ -10,4 +10,22 @@ $consulta = "SELECT tipoTren FROM tipoTren WHERE nombre = ?";
             $stmt->free_result();
         }
     }
+//_______________________________________________________________
+    $consulta = "SELECT * FROM publicacion ";
+    $result = $mysqli->query($consulta);
+    if ($result) {
+        while ($row = $result->fetch_assoc()) {
+            $pubId[] = $row['pubId'];
+            $correoUsu[] = $row['email'];
+            $modelo[] = $row['titulo'];
+
+        }
+    }
+
+    for($i = 0; $i < count($pubId) ; $i++){
+        echo "$pubId[$i], $correoUsu[$i] ,$modelo[$i]  <br><br>";
+    }
+
+
+
     ?>

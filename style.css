@@ -132,6 +132,22 @@ p {
 .margen-izquierdo-10px {
   margin-left: 10px;
 }
+div {
+  width: 300px;
+  border: 15px solid green;
+  padding: 50px;
+  margin: 20px;
+}
+.caja {
+  border: 1px solid #ccc;
+  padding: 10px;
+}
+
+.caja:empty {
+  background-color: #3498db; 
+  color: #fff; 
+}
+
 
 /* TODO Boton*/
 .btn {

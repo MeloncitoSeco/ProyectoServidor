@@ -25,7 +25,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     @$modelo = $_POST["modelo"];
     @$titulo = $_POST["titulo"];
     @$fecha = $_POST["fecha"];
-    
+
     @$email = $_POST["email"];
     @$contra = $_POST["contra"];
     @$slider = $_POST["slider"];
@@ -34,11 +34,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     @$comu = $_POST["comu"];
     @$datos = $_POST["datos"];
 
-
     if (@$_POST["modelo"] == "") {
-        $error .=  "Rellenar el modelo ";
-    } elseif (!validarNombre($_POST["modelo"])) {
-        $error .=  "modelo";
+        $error .=  ", el modelo es obligatorio";
     }
 
     if (@$_POST["titulo"] == "") {
@@ -47,7 +44,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $error .=  "titulo";
     }
 
-    
+
     if (@$_POST["email"] == "") {
         $error .=  ", email ";
     } elseif (!filter_var($_POST["email"], FILTER_VALIDATE_EMAIL)) {
@@ -74,20 +71,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     @$_SESSION['email'] = $email;
 
 
-// TODO insertar datos en base de datos
-echo $email;
-$inputTipoTren = $tren;
-$inputExisteUser = $email;
-$sqlEmail = $email;
-$sqlModelo=$modelo;
-$sqlFechaFabricacion=$slider;
-$sqlContra=$contra;
-$sqlTitulo=$titulo; // TODO crear uninser llamado titulo
-$sqlPosicion=$movimiento;
-$sqlComAuto=$comu;
-$sqlFecha=$fecha;
-$sqlSesion=$sessionID ;
-$sqlNum="1";
+    // TODO insertar datos en base de datos
+    $inputTipoTren = $tren;
+    $inputExisteUser = $email;
+    $sqlEmail = $email;
+    $sqlModelo = $modelo;
+    $sqlFechaFabricacion = $slider;
+    $sqlContra = $contra;
+    $sqlTitulo = $titulo; // TODO crear uninser llamado titulo
+    $sqlPosicion = $movimiento;
+    $sqlComAuto = $comu;
+    $sqlFecha = $fecha;
+    $sqlSesion = $sessionID;
+    $sqlNum = "1";
 
 
 
@@ -108,7 +104,6 @@ $sqlNum="1";
             if ($stmt->execute()) {
                 $stmt->bind_result($sqlTipoTren);
                 $stmt->fetch();
-                echo "$sqlTipoTren <br>";
                 $stmt->free_result();
             }
         }
@@ -121,7 +116,6 @@ $sqlNum="1";
                 $stmt->bind_result($sqlTrenId);
                 $stmt->fetch();
                 $stmt->free_result();
-                echo "$sqlTrenId <br>";
             }
         }
 
@@ -131,7 +125,6 @@ $sqlNum="1";
             if ($stmt->execute()) {
                 $stmt->bind_result($sqlPubId);
                 $stmt->fetch();
-                echo "$sqlPubId <br>";
                 $stmt->free_result();
             }
         }
@@ -146,7 +139,6 @@ $sqlNum="1";
                 $stmt->bind_result($sqlExisteUser);
                 $stmt->fetch();
                 $stmt->free_result();
-                echo "$sqlExisteUser <br>";
             }
         }
 
@@ -233,7 +225,7 @@ $sqlNum="1";
         @$modelo = $_POST["modelo"];
         @$titulo = $_POST["titulo"];
         @$fecha = $_POST["fecha"];
-        
+
         @$email = $_POST["email"];
         @$contra = $_POST["contra"];
         @$slider = $_POST["slider"];
@@ -254,7 +246,7 @@ $sqlNum="1";
             echo 'Error: ' . $e->getMessage();
         }
 
-        echo "LLeago"; // TODO BORRAR ESTO y poner lo de abajo
+        // TODO BORRAR ESTO y poner lo de abajo
 
         //header("Location: contar.php");
     }
@@ -262,13 +254,13 @@ $sqlNum="1";
 
 ?>
 
-<! //TODO limpiar todos los formatos que no sirven VV>
+<! //TODO limpiar todos los formatos que no sirven VVV>
     <!DOCTYPE html>
     <html>
 
     <head>
 
-        <title>Repintar formulario</title>
+        <title>Train to DAW</title>
         <meta charset="UTF-8">
         <link rel="stylesheet" href="./style.css">
 
@@ -279,7 +271,7 @@ $sqlNum="1";
         <h1>Train 2 Daw</h1>
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST" enctype="multipart/form-data">
             <left>
-                <? //TODO hacer las subidas 
+                <? //TODO hacer las subidas VVV
                 ?>
                 <h3>Usuario:</h3>
                 <label for="email">Email:</label>
