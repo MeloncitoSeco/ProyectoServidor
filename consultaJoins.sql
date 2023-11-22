@@ -158,13 +158,3 @@ START TRANSACTION;
 USE `servidor`;
 INSERT INTO `servidor`.`Publicacion` (`pubId`, `email`, `trenId`, `titulo`, `posicion`, `comAuto`) VALUES (1, 'santiago@gmail.com', 1, 'Primer Civia', 'Quieto', 'Andalucía');
 COMMIT;
-
-
--- -----------------------------------------------------
--- Data for table `servidor`.`Imagen`
--- -----------------------------------------------------
-START TRANSACTION;
-USE `servidor`;
-INSERT INTO `servidor`.`Imagen` ( `imgId`,`fecha`, `pubId`, `sesion`, `num`) VALUES (1,'2023-10-10', 2, 'trdt45fttghj67', 10);
-
-COMMIT;
