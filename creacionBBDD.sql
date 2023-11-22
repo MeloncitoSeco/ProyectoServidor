@@ -93,7 +93,7 @@ DEFAULT CHARACTER SET = utf8mb3;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `servidor`.`Imagen` (
   `imgId` INT NOT NULL AUTO_INCREMENT,
-  `fecha` DATE NOT NULL,
+  `fecha` DATETIME NOT NULL,
   `pubId` INT NOT NULL,
   `sesion` VARCHAR(255) NULL DEFAULT NULL,
   `num` INT NULL DEFAULT NULL,
@@ -172,4 +172,3 @@ INSERT INTO `servidor`.`Imagen` ( `fecha`, `pubId`, `sesion`, `num`) VALUES ('20
 INSERT INTO `servidor`.`Imagen` ( `fecha`, `pubId`, `sesion`, `num`) VALUES ('2023-10-10', 2, 'jose', 14);
 
 COMMIT;
-

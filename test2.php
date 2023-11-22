@@ -124,6 +124,10 @@ $sqlPubId++;
     $stmt->bind_param("isisss", $sqlPubId, $sqlEmail, $sqlTrenId, $sqlTitulo, $sqlPosicion, $sqlComAuto);
     $stmt->execute();
 
+
+
+
+    
 //insertar datos fotos
 
 //$sqlFecha

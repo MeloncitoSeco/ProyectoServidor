@@ -23,6 +23,9 @@ $clave = 'daw2324';
 $error = "Hay errores en: ";
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     @$modelo = $_POST["modelo"];
+    @$titulo = $_POST["titulo"];
+    @$fecha = $_POST["fecha"];
+    
     @$email = $_POST["email"];
     @$contra = $_POST["contra"];
     @$slider = $_POST["slider"];
@@ -38,6 +41,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $error .=  "modelo";
     }
 
+    if (@$_POST["titulo"] == "") {
+        $error .=  "Rellenar el titulo ";
+    } elseif (!validarNombre($_POST["titulo"])) {
+        $error .=  "titulo";
+    }
+
+    
     if (@$_POST["email"] == "") {
         $error .=  ", email ";
     } elseif (!filter_var($_POST["email"], FILTER_VALIDATE_EMAIL)) {
@@ -64,32 +74,156 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     @$_SESSION['email'] = $email;
 
 
+// TODO insertar datos en base de datos
+echo $email;
+$inputTipoTren = $tren;
+$inputExisteUser = $email;
+$sqlEmail = $email;
+$sqlModelo=$modelo;
+$sqlFechaFabricacion=$slider;
+$sqlContra=$contra;
+$sqlTitulo=$titulo; // TODO crear uninser llamado titulo
+$sqlPosicion=$movimiento;
+$sqlComAuto=$comu;
+$sqlFecha=$fecha;
+$sqlSesion=$sessionID ;
+$sqlNum="1";
 
 
 
 
 
-
-
-
-    
-
-    // TODO Depuracion, guardado y recuperacion de archivos
-    $fotos = $_FILES['fotos'];
-    $dirFotos = [];
-    $fotosInsertadas=0;
-    for ($i = 0; $i < count($fotos["name"]); $i++) {
-
-        $nombreFoto = $fotos["name"][$i];
-        $tipoFoto = $fotos["type"][$i];
-        $tmpName = $fotos["tmp_name"][$i];
-
-        if ($tipoFoto === "image/png") {
-            
-            $nombreGuardado = "$i.png";
-            move_uploaded_file($tmpName, "fotos/" . $nombreGuardado);
-            $fotosInsertadas++;
+    try {
+        $mysqli = new mysqli($host, $usuario, $clave, $tabla);
+        if ($mysqli->connect_error) {
+            die("Error de conexión: " . $mysqli->connect_error);
+            echo "error";
         }
+
+        // Sacar tipò tren // TODO sen 1
+        $consulta = "SELECT tipoTren FROM tipoTren WHERE nombre = ?";
+        if ($stmt = $mysqli->prepare($consulta)) {
+
+            $stmt->bind_param('s', $inputTipoTren);
+            if ($stmt->execute()) {
+                $stmt->bind_result($sqlTipoTren);
+                $stmt->fetch();
+                echo "$sqlTipoTren <br>";
+                $stmt->free_result();
+            }
+        }
+
+        // Sacar ultimo tren // TODO sen 2
+        $consulta_sacarId = "SELECT max(trenId) FROM tren limit 1";
+        if ($stmt = $mysqli->prepare($consulta_sacarId)) {
+
+            if ($stmt->execute()) {
+                $stmt->bind_result($sqlTrenId);
+                $stmt->fetch();
+                $stmt->free_result();
+                echo "$sqlTrenId <br>";
+            }
+        }
+
+        // Sacar ultima pub // TODO sen 3
+        $consulta = "SELECT max(pubId) FROM publicacion limit 1";
+        if ($stmt = $mysqli->prepare($consulta)) {
+            if ($stmt->execute()) {
+                $stmt->bind_result($sqlPubId);
+                $stmt->fetch();
+                echo "$sqlPubId <br>";
+                $stmt->free_result();
+            }
+        }
+
+        //sqlExisteUser // TODO sen 4
+        $consulta = " SELECT COUNT( email) > 0 FROM usuario WHERE email=? limit 1";
+
+        if ($stmt = $mysqli->prepare($consulta)) {
+
+            $stmt->bind_param('s', $inputExisteUser);
+            if ($stmt->execute()) {
+                $stmt->bind_result($sqlExisteUser);
+                $stmt->fetch();
+                $stmt->free_result();
+                echo "$sqlExisteUser <br>";
+            }
+        }
+
+
+
+        //PREPARACION DE DATOS
+
+
+        // necesito la id del tren que es la sen 2 y el tipo tren que es la sen 1
+        //$sqlTipoTren;
+        $sqlTrenId++;
+        //$sqlModelo
+        //$sqlFechaFabricacion
+
+        $stmt = $mysqli->prepare("INSERT INTO Tren (trenId, modelo, tipoTren, fechaFabricacion) VALUES (?, ?, ?, ?)");
+        $stmt->bind_param("isii", $sqlTrenId, $sqlModelo, $sqlTipoTren, $sqlFechaFabricacion);
+        $stmt->execute();
+        // ver si existe el usuario
+        //$sqlContra
+
+        if ($sqlExisteUser != 1) {
+            $stmt = $mysqli->prepare("INSERT INTO Usuario (email, contra) VALUES (?, ?)");
+            $stmt->bind_param("ss", $sqlEmail, $sqlContra);
+            $stmt->execute();
+        }
+
+
+        //Insertar en la publicacion
+        //$sqlTitulo
+        //$sqlPosicion
+        //$sqlComAuto
+        $sqlPubId++;
+        $stmt = $mysqli->prepare("INSERT INTO Publicacion (pubId, email, trenId, titulo, posicion, comAuto) VALUES (?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param("isisss", $sqlPubId, $sqlEmail, $sqlTrenId, $sqlTitulo, $sqlPosicion, $sqlComAuto);
+        $stmt->execute();
+
+
+
+        // TODO Depuracion, guardado y recuperacion de archivos
+        $fotos = $_FILES['fotos'];
+        // $dirFotos = [];
+        $sqlLastIdImg;
+
+        for ($i = 0; $i < count($fotos["name"]); $i++) {
+
+            $nombreFoto = $fotos["name"][$i];
+            $tipoFoto = $fotos["type"][$i];
+            $tmpName = $fotos["tmp_name"][$i];
+
+            if ($tipoFoto === "image/png") {
+                $consulta = " SELECT max(imgId) FROM imagen";
+
+                if ($stmt = $mysqli->prepare($consulta)) {
+                    if ($stmt->execute()) {
+                        $stmt->bind_result($sqlLastIdImg);
+                        $stmt->fetch();
+                        $stmt->free_result();
+                        $sqlLastIdImg++;
+                    }
+                }
+
+
+                $nombreGuardado = "$sqlLastIdImg.png";
+                move_uploaded_file($tmpName, "fotos/" . $nombreGuardado);
+                //insertar datos fotos
+
+                //$sqlFecha
+                //$sqlSesion
+                //$sqlNum
+
+                $stmt = $mysqli->prepare("INSERT INTO Imagen (fecha, pubId, sesion, num) VALUES (?, ?, ?, ?)");
+                $stmt->bind_param("sisi", $sqlFecha, $sqlPubId, $sqlSesion, $sqlNum);
+                $stmt->execute();
+            }
+        }
+    } catch (Exception $e) {
+        echo 'Error: ' . $e->getMessage();
     }
     session_destroy();
 
@@ -97,6 +231,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if ($error != "Hay errores en: ") {
         @$modelo = $_POST["modelo"];
+        @$titulo = $_POST["titulo"];
+        @$fecha = $_POST["fecha"];
+        
         @$email = $_POST["email"];
         @$contra = $_POST["contra"];
         @$slider = $_POST["slider"];
@@ -117,7 +254,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             echo 'Error: ' . $e->getMessage();
         }
 
-        echo "LLeago"; // TODO BORRAR ESTO
+        echo "LLeago"; // TODO BORRAR ESTO y poner lo de abajo
 
         //header("Location: contar.php");
     }
@@ -177,17 +314,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
 
-                <h3>Tren:</h3>
-                Ave<input type="radio" class="margen" id="altaVelocidad" name="tren" value="1" <?php if (isset($tren) && $tren === "1") echo "checked"; ?>>
-                Alvia<input type="radio" class="margen" id="altaVelocidad" name="tren" value="2" <?php if (isset($tren) && $tren === "2") echo "checked"; ?>>
-                Avant<input type="radio" class="margen" id="altaVelocidad" name="tren" value="3" <?php if (isset($tren) && $tren === "3") echo "checked"; ?>>
-                IRYO<input type="radio" class="margen" id="altaVelocidad" name="tren" value="4" <?php if (isset($tren) && $tren === "4") echo "checked"; ?>>
-                OUIGO<input type="radio" class="margen" id="altaVelocidad" name="tren" value="5" <?php if (isset($tren) && $tren === "5") echo "checked"; ?>>
+                <h3>Publicacion:</h3>
+                <label for="titulo">Titulo:</label>
+                <input value="<?php if (isset($titulo)) echo $titulo; ?>" class="entradas" id="entradas" name="titulo" type="text" placeholder="Introduzce el titulo" required>
+
+                <br><br>
+
+
+                Ave<input type="radio" class="margen" id="altaVelocidad" name="tren" value="Ave" <?php if (isset($tren) && $tren === "Ave") echo "checked"; ?>>
+                Alvia<input type="radio" class="margen" id="altaVelocidad" name="tren" value="Alvia" <?php if (isset($tren) && $tren === "Alvia") echo "checked"; ?>>
+                Avant<input type="radio" class="margen" id="altaVelocidad" name="tren" value="Avant" <?php if (isset($tren) && $tren === "Avant") echo "checked"; ?>>
+                IRYO<input type="radio" class="margen" id="altaVelocidad" name="tren" value="IRYO" <?php if (isset($tren) && $tren === "IRYO") echo "checked"; ?>>
+                OUIGO<input type="radio" class="margen" id="altaVelocidad" name="tren" value="OUIGO" <?php if (isset($tren) && $tren === "OUIGO") echo "checked"; ?>>
                 <br>
-                LD<input type="radio" class="margen" id="trenes" name="tren" value="6" <?php if (isset($tren) && $tren === "6") echo "checked"; ?>>
-                MD<input type="radio" class="margen" id="trenes" name="tren" value="7" <?php if (isset($tren) && $tren === "7") echo "checked"; ?>>
-                Cercanias/Rodalies<input type="radio" class="margen" id="trenes" name="tren" value="8" <?php if (isset($tren) && $tren === "8") echo "checked"; ?>>
-                AM<input type="radio" class="margen" id="trenes" name="tren" value="9" <?php if (isset($tren) && $tren === "am") echo "9"; ?>>
+                LD<input type="radio" class="margen" id="trenes" name="tren" value="LD" <?php if (isset($tren) && $tren === "LD") echo "checked"; ?>>
+                MD<input type="radio" class="margen" id="trenes" name="tren" value="MD" <?php if (isset($tren) && $tren === "MD") echo "checked"; ?>>
+                Cercanias/Rodalies<input type="radio" class="margen" id="trenes" name="tren" value="Cercanias/Rodalies" <?php if (isset($tren) && $tren === "Cercanias/Rodalies") echo "checked"; ?>>
+                AM<input type="radio" class="margen" id="trenes" name="tren" value="AM" <?php if (isset($tren) && $tren === "AM") echo "checked"; ?>>
                 <br><br>
                 <label for="modelo">Modelo:</label>
                 <input value="<?php if (isset($modelo)) echo $modelo; ?>" class="entradas" id="entradas" name="modelo" type="text" placeholder="Introduzce el modelo" required>
@@ -249,7 +392,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                                                                 } else {
                                                                                     echo "2023";
                                                                                 } ?>>
-                
+
 
 
             </left>
