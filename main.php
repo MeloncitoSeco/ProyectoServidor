@@ -77,14 +77,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // TODO Depuracion, guardado y recuperacion de archivos
     $fotos = $_FILES['fotos'];
     $dirFotos = [];
+    $fotosInsertadas=0;
     for ($i = 0; $i < count($fotos["name"]); $i++) {
+
         $nombreFoto = $fotos["name"][$i];
         $tipoFoto = $fotos["type"][$i];
         $tmpName = $fotos["tmp_name"][$i];
 
         if ($tipoFoto === "image/png") {
-            $nombreGuardado = "$sessionID-$i.png";
+            
+            $nombreGuardado = "$i.png";
             move_uploaded_file($tmpName, "fotos/" . $nombreGuardado);
+            $fotosInsertadas++;
         }
     }
     session_destroy();

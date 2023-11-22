@@ -4,17 +4,30 @@ $tabla = "servidor";
 $usuario = 'visual';
 $clave = 'daw2324';
 
-$sqlTipoTren; // sen 1 id del tren de abajo
-$inputTipoTren = 'Alvia';
+$inputTipoTren = 'MD';
+$inputExisteUser = "yuri@gmail.com";
+$sqlModelo="H37";
+$sqlFechaFabricacion="2003";
+$sqlContra="yuriguapo";
+$sqlTitulo="Un tren super chulo";
+$sqlPosicion="Quieto";
+$sqlComAuto="Palencia";
+$sqlFecha="2011-7-2";
+$sqlSesion="sderkjhg86ef";
+$sqlNum="7";
 
-$sqlTren; // sen 2 id del ultimo tren subido
+
+$sqlTipoTren; // sen 1 id del tren de abajo
+$inputTipoTren;
+
+$sqlTrenId; // sen 2 id del ultimo tren subido
 
 $sqlPubId; // sen 3 id ultima publicacion
 
 
 $sqlExisteUser; // sen 4   sacar si existe esa persona en booleano
-$inputExisteUser = "santiago@gmail.com";
-
+$inputExisteUser; // _______________________
+$sqlEmail=$inputExisteUser;
 
 
 
@@ -44,10 +57,10 @@ try {
     if ($stmt = $mysqli->prepare($consulta_sacarId)) {
 
         if ($stmt->execute()) {
-            $stmt->bind_result($sqlTren);
+            $stmt->bind_result($sqlTrenId);
             $stmt->fetch();
             $stmt->free_result();
-            echo "$sqlTren <br>";
+            echo "$sqlTrenId <br>";
         }
     }
 
@@ -83,24 +96,43 @@ try {
     //PREPARACION DE DATOS
 
 
+    // necesito la id del tren que es la sen 2 y el tipo tren que es la sen 1
+    //$sqlTipoTren;
+    $sqlTrenId++;
+    //$sqlModelo
+    //$sqlFechaFabricacion
 
     $stmt = $mysqli->prepare("INSERT INTO Tren (trenId, modelo, tipoTren, fechaFabricacion) VALUES (?, ?, ?, ?)");
-    //$stmt->bind_param("isii" );
+    $stmt->bind_param("isii", $sqlTrenId, $sqlModelo, $sqlTipoTren, $sqlFechaFabricacion);
     $stmt->execute();
-    
-    $stmt = $mysqli->prepare("INSERT INTO Usuario (email, contra) VALUES (?, ?)");
-    //$stmt->bind_param("is" );
-    $stmt->execute();
-    
+    // ver si existe el usuario
+//$sqlContra
+
+    if ($sqlExisteUser != 1) {
+        $stmt = $mysqli->prepare("INSERT INTO Usuario (email, contra) VALUES (?, ?)");
+        $stmt->bind_param("ss", $sqlEmail, $sqlContra);
+        $stmt->execute();
+    }
+
+
+//Insertar en la publicacion
+//$sqlTitulo
+//$sqlPosicion
+//$sqlComAuto
+$sqlPubId++;
     $stmt = $mysqli->prepare("INSERT INTO Publicacion (pubId, email, trenId, titulo, posicion, comAuto) VALUES (?, ?, ?, ?, ?, ?)");
-    //$stmt->bind_param("isii" );
+    $stmt->bind_param("isisss", $sqlPubId, $sqlEmail, $sqlTrenId, $sqlTitulo, $sqlPosicion, $sqlComAuto);
     $stmt->execute();
+
+//insertar datos fotos
+
+//$sqlFecha
+//$sqlSesion
+//$sqlNum
 
     $stmt = $mysqli->prepare("INSERT INTO Imagen (fecha, pubId, sesion, num) VALUES (?, ?, ?, ?)");
-    //$stmt->bind_param("isii" );
+    $stmt->bind_param("sisi", $sqlFecha, $sqlPubId, $sqlSesion, $sqlNum);
     $stmt->execute();
-
-
     
 } catch (Exception $e) {
     echo 'Error: ' . $e->getMessage();
@@ -114,5 +146,3 @@ try {
 //INSERT INTO `servidor`.`Publicacion` (`pubId`, `email`, `trenId`, `titulo`, `posicion`, `comAuto`) VALUES (1, 'santiago@gmail.com', 1, 'Primer Civia', 'Quieto', 'Andalucía');
 
 //INSERT INTO `servidor`.`Imagen` ( `fecha`, `pubId`, `sesion`, `num`) VALUES ('2023-11-11', 1, 'santi', 0);
-
- 
