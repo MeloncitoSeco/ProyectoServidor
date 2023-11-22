@@ -1,22 +1,11 @@
 <?php
 /* si va bien redirige a parametrosFormulario.php si va mal, mensaje de error */
-
-function validarNombre($a)
-{
-    trim($a);
-    if (!ctype_upper($a[0]))
-        return (false);
-    if (strlen($a) > 24)
-        return (false);
-    return (true);
-}
+include('validar.php');
 // TODO Datos entrada mysql VVV
-
 $host = "127.0.0.1";
 $tabla = "servidor";
 $usuario = 'visual';
 $clave = 'daw2324';
-
 
 // TODO Validar entradas de fotos
 // TODO añadir titulo pub
@@ -25,7 +14,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     @$modelo = $_POST["modelo"];
     @$titulo = $_POST["titulo"];
     @$fecha = $_POST["fecha"];
-
     @$email = $_POST["email"];
     @$contra = $_POST["contra"];
     @$slider = $_POST["slider"];
@@ -36,12 +24,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if (@$_POST["modelo"] == "") {
         $error .=  ", el modelo es obligatorio";
+    } elseif (validarModelo(@$_POST["modelo"])) {
     }
 
     if (@$_POST["titulo"] == "") {
         $error .=  "Rellenar el titulo ";
+    } elseif (validarTitulo(@$_POST["titulo"])) {
     }
-
 
     if (@$_POST["email"] == "") {
         $error .=  ", email ";
@@ -68,7 +57,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $sessionID = session_id();
     @$_SESSION['email'] = $email;
 
-
     // TODO insertar datos en base de datos
     $inputTipoTren = $tren;
     $inputExisteUser = $email;
@@ -82,10 +70,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $sqlFecha = $fecha;
     $sqlSesion = $sessionID;
     $sqlNum = "1";
-
-
-
-
 
     try {
         $mysqli = new mysqli($host, $usuario, $clave, $tabla);
@@ -139,11 +123,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $stmt->free_result();
             }
         }
-
-
-
         //PREPARACION DE DATOS
-
 
         // necesito la id del tren que es la sen 2 y el tipo tren que es la sen 1
         //$sqlTipoTren;
@@ -163,7 +143,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $stmt->execute();
         }
 
-
         //Insertar en la publicacion
         //$sqlTitulo
         //$sqlPosicion
@@ -172,8 +151,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt = $mysqli->prepare("INSERT INTO Publicacion (pubId, email, trenId, titulo, posicion, comAuto) VALUES (?, ?, ?, ?, ?, ?)");
         $stmt->bind_param("isisss", $sqlPubId, $sqlEmail, $sqlTrenId, $sqlTitulo, $sqlPosicion, $sqlComAuto);
         $stmt->execute();
-
-
 
         // TODO Depuracion, guardado y recuperacion de archivos
         $fotos = $_FILES['fotos'];
@@ -197,7 +174,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         $sqlLastIdImg++;
                     }
                 }
-
 
                 $nombreGuardado = "$sqlLastIdImg.png";
                 move_uploaded_file($tmpName, "fotos/" . $nombreGuardado);
@@ -223,7 +199,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         @$modelo = $_POST["modelo"];
         @$titulo = $_POST["titulo"];
         @$fecha = $_POST["fecha"];
-
         @$email = $_POST["email"];
         @$contra = $_POST["contra"];
         @$slider = $_POST["slider"];
@@ -243,33 +218,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         } catch (Exception $e) {
             echo 'Error: ' . $e->getMessage();
         }
-
-        
-
         header("Location: foro.php");
     }
 }
-
 ?>
-
 <! //TODO limpiar todos los formatos que no sirven VVV>
     <!DOCTYPE html>
     <html>
-
+    <html lang="es">
     <head>
-
         <title>Train to DAW</title>
+        
         <meta charset="UTF-8">
         <link rel="stylesheet" href="./style.css">
-
     </head>
 
     <body>
-
         <h1>Train 2 Daw</h1>
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST" enctype="multipart/form-data">
             <left>
-                <? //TODO hacer las subidas VVV
+                <? //TODO hacer las subidas VVV 
                 ?>
                 <h3>Usuario:</h3>
                 <label for="email">Email:</label>
@@ -277,8 +245,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <br><br>
                 <label for="contra">Contraseña:</label>
                 <input value="<?php if (isset($contra)) echo $contra; ?>" id="entradas" name="contra" type="password" class="margen" placeholder="Introduzca su contraseña" required>
-
-
 
                 <br>
                 <label for="slider" class="espacio">Fecha de fabricacion</label>
@@ -302,15 +268,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     });
                 </script>
 
-
-
                 <h3>Publicacion:</h3>
                 <label for="titulo">Titulo:</label>
                 <input value="<?php if (isset($titulo)) echo $titulo; ?>" class="entradas" id="entradas" name="titulo" type="text" placeholder="Introduzce el titulo" required>
 
                 <br><br>
-
-
                 Ave<input type="radio" class="margen" id="altaVelocidad" name="tren" value="Ave" <?php if (isset($tren) && $tren === "Ave") echo "checked"; ?>>
                 Alvia<input type="radio" class="margen" id="altaVelocidad" name="tren" value="Alvia" <?php if (isset($tren) && $tren === "Alvia") echo "checked"; ?>>
                 Avant<input type="radio" class="margen" id="altaVelocidad" name="tren" value="Avant" <?php if (isset($tren) && $tren === "Avant") echo "checked"; ?>>
@@ -321,6 +283,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 MD<input type="radio" class="margen" id="trenes" name="tren" value="MD" <?php if (isset($tren) && $tren === "MD") echo "checked"; ?>>
                 Cercanias/Rodalies<input type="radio" class="margen" id="trenes" name="tren" value="Cercanias/Rodalies" <?php if (isset($tren) && $tren === "Cercanias/Rodalies") echo "checked"; ?>>
                 AM<input type="radio" class="margen" id="trenes" name="tren" value="AM" <?php if (isset($tren) && $tren === "AM") echo "checked"; ?>>
+
                 <br><br>
                 <label for="modelo">Modelo:</label>
                 <input value="<?php if (isset($modelo)) echo $modelo; ?>" class="entradas" id="entradas" name="modelo" type="text" placeholder="Introduzce el modelo" required>
@@ -328,22 +291,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <br><br>
                 <label for="movimiento">Posicion:</label>
                 <select class="mov" name="movimiento" required>
-
                     <option value="quieto" <?php if (isset($movimiento) && $movimiento === "quieto") echo "selected"; ?>>Quieto</option>
                     <option value="moviendo" <?php if (isset($movimiento) && $movimiento === "moviendo") echo "selected"; ?>>Movimiento</option>
                     <option value="reparando" <?php if (isset($movimiento) && $movimiento === "reparando") echo "selected"; ?>>Reparando</option>
-
                 </select>
 
                 <br><br>
-
                 <label for="birthdaytime">Fecha de foto:</label>
                 <input type="datetime-local" id="fecha" name="fecha" max="<?= date('Y-m-d\TH:i'); ?>" value="<?php if (isset($fecha)) echo $fecha; ?>" required>
 
-
                 <br><br>
-
-
                 <label for="comu">Donde sacaste la foto</label>
 
                 <select class="comu" name="comu" id="comu" required>
@@ -365,11 +322,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <option value="Navarra" <?php if (isset($comunidad_autonoma) && $comunidad_autonoma === "Navarra") echo "selected"; ?>>Navarra</option>
                     <option value="País Vasco" <?php if (isset($comunidad_autonoma) && $comunidad_autonoma === "País Vasco") echo "selected"; ?>>País Vasco</option>
                     <option value="Valencia" <?php if (isset($comunidad_autonoma) && $comunidad_autonoma === "Valencia") echo "selected"; ?>>Comunidad Valenciana</option>
-
                 </select>
-
-
-
 
                 <br><br>
                 <label for="fotos">Selecciona archivos png:</label>
@@ -382,21 +335,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                                                                 } else {
                                                                                     echo "2023";
                                                                                 } ?>>
-
-
-
             </left>
-
-
+            <p class="right"><a href="foro.php"> Ir al foro</a></p>
             <p> <input type="submit" class="btn"></p>
-
-
-
-            <br><br>
-
-
+            <br>
+            
+            <br>
         </form>
-
     </body>
 
     </html>
