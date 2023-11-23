@@ -5,7 +5,7 @@ include('validar.php');
 include('datosInicioSql.php');
 
 
-// TODO añadir titulo pub
+// TODO añadir titulo pub VVV
 $error = "Hay errores en: ";
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     @$modelo = $_POST["modelo"];
@@ -18,6 +18,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     @$movimiento = $_POST["movimiento"];
     @$comu = $_POST["comu"];
     @$datos = $_POST["datos"];
+    @$fotos = $_FILES['fotos'];
 
     if (@$_POST["modelo"] == "") {
         $error .=  ", el modelo es obligatorio";
@@ -51,147 +52,152 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (@$_POST["datos"] == "") {
         $error .= " y datos ";
     }
-    // TODO Sesion   VVV
-    session_start();
-    $sessionID = session_id();
-    @$_SESSION['email'] = $email;
 
-    // TODO insertar datos en base de datos
-    $inputTipoTren = $tren;
-    $inputExisteUser = $email;
-    $sqlEmail = $email;
-    $sqlModelo = $modelo;
-    $sqlFechaFabricacion = $slider;
-    $sqlContra = $contra;
-    $sqlTitulo = $titulo; // TODO crear uninser llamado titulo
-    $sqlPosicion = $movimiento;
-    $sqlComAuto = $comu;
-    $sqlFecha = $fecha;
-    $sqlSesion = $sessionID;
-    $sqlNum = "1";
+    if (!count($fotos["name"]) <= 11) {
+        $error .= " Demasiadas fotos ";
+    }else {
+        // TODO Sesion   VVV
+        session_start();
+        $sessionID = session_id();
+        @$_SESSION['email'] = $email;
 
-    try {
-        $mysqli = new mysqli($host, $usuario, $clave, $tabla);
-        if ($mysqli->connect_error) {
-            die("Error de conexión: " . $mysqli->connect_error);
-            echo "error";
-        }
+        // TODO insertar datos en base de datos VVV
+        $inputTipoTren = $tren;
+        $inputExisteUser = $email;
+        $sqlEmail = $email;
+        $sqlModelo = $modelo;
+        $sqlFechaFabricacion = $slider;
+        $sqlContra = $contra;
+        $sqlTitulo = $titulo; // TODO crear uninser llamado titulo VVV
+        $sqlPosicion = $movimiento;
+        $sqlComAuto = $comu;
+        $sqlFecha = $fecha;
+        $sqlSesion = $sessionID;
+        $sqlNum = "1";
 
-        // Sacar tipò tren // TODO sen 1
-        $consulta = "SELECT tipoTren FROM tipoTren WHERE nombre = ?";
-        if ($stmt = $mysqli->prepare($consulta)) {
-
-            $stmt->bind_param('s', $inputTipoTren);
-            if ($stmt->execute()) {
-                $stmt->bind_result($sqlTipoTren);
-                $stmt->fetch();
-                $stmt->free_result();
+        try {
+            $mysqli = new mysqli($host, $usuario, $clave, $tabla);
+            if ($mysqli->connect_error) {
+                die("Error de conexión: " . $mysqli->connect_error);
+                echo "error";
             }
-        }
 
-        // Sacar ultimo tren // TODO sen 2
-        $consulta_sacarId = "SELECT max(trenId) FROM tren limit 1";
-        if ($stmt = $mysqli->prepare($consulta_sacarId)) {
+            // Sacar tipò tren // TODO sen 1
+            $consulta = "SELECT tipoTren FROM tipoTren WHERE nombre = ?";
+            if ($stmt = $mysqli->prepare($consulta)) {
 
-            if ($stmt->execute()) {
-                $stmt->bind_result($sqlTrenId);
-                $stmt->fetch();
-                $stmt->free_result();
-            }
-        }
-
-        // Sacar ultima pub // TODO sen 3
-        $consulta = "SELECT max(pubId) FROM publicacion limit 1";
-        if ($stmt = $mysqli->prepare($consulta)) {
-            if ($stmt->execute()) {
-                $stmt->bind_result($sqlPubId);
-                $stmt->fetch();
-                $stmt->free_result();
-            }
-        }
-
-        //sqlExisteUser // TODO sen 4
-        $consulta = " SELECT COUNT( email) > 0 FROM usuario WHERE email=? limit 1";
-
-        if ($stmt = $mysqli->prepare($consulta)) {
-
-            $stmt->bind_param('s', $inputExisteUser);
-            if ($stmt->execute()) {
-                $stmt->bind_result($sqlExisteUser);
-                $stmt->fetch();
-                $stmt->free_result();
-            }
-        }
-        //PREPARACION DE DATOS
-
-        // necesito la id del tren que es la sen 2 y el tipo tren que es la sen 1
-        //$sqlTipoTren;
-        $sqlTrenId++;
-        //$sqlModelo
-        //$sqlFechaFabricacion
-
-        $stmt = $mysqli->prepare("INSERT INTO Tren (trenId, modelo, tipoTren, fechaFabricacion) VALUES (?, ?, ?, ?)");
-        $stmt->bind_param("isii", $sqlTrenId, $sqlModelo, $sqlTipoTren, $sqlFechaFabricacion);
-        $stmt->execute();
-        // ver si existe el usuario
-        //$sqlContra
-
-        if ($sqlExisteUser != 1) {
-            $stmt = $mysqli->prepare("INSERT INTO Usuario (email, contra) VALUES (?, ?)");
-            $stmt->bind_param("ss", $sqlEmail, $sqlContra);
-            $stmt->execute();
-        }
-
-        //Insertar en la publicacion
-        //$sqlTitulo
-        //$sqlPosicion
-        //$sqlComAuto
-        $sqlPubId++;
-        $stmt = $mysqli->prepare("INSERT INTO Publicacion (pubId, email, trenId, titulo, posicion, comAuto) VALUES (?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param("isisss", $sqlPubId, $sqlEmail, $sqlTrenId, $sqlTitulo, $sqlPosicion, $sqlComAuto);
-        $stmt->execute();
-
-        // TODO Depuracion, guardado y recuperacion de archivos  VVV
-        $fotos = $_FILES['fotos'];
-        // $dirFotos = [];
-        $sqlLastIdImg;
-
-        for ($i = 0; $i < count($fotos["name"]); $i++) {
-
-            $nombreFoto = $fotos["name"][$i];
-            $tipoFoto = $fotos["type"][$i];
-            $tmpName = $fotos["tmp_name"][$i];
-
-            if ($tipoFoto === "image/png") {
-                $consulta = " SELECT max(imgId) FROM imagen";
-
-                if ($stmt = $mysqli->prepare($consulta)) {
-                    if ($stmt->execute()) {
-                        $stmt->bind_result($sqlLastIdImg);
-                        $stmt->fetch();
-                        $stmt->free_result();
-                        $sqlLastIdImg++;
-                    }
+                $stmt->bind_param('s', $inputTipoTren);
+                if ($stmt->execute()) {
+                    $stmt->bind_result($sqlTipoTren);
+                    $stmt->fetch();
+                    $stmt->free_result();
                 }
+            }
 
-                $nombreGuardado = "$sqlLastIdImg.png";
-                move_uploaded_file($tmpName, "fotos/" . $nombreGuardado);
-                //insertar datos fotos
+            // Sacar ultimo tren // TODO sen 2
+            $consulta_sacarId = "SELECT max(trenId) FROM tren limit 1";
+            if ($stmt = $mysqli->prepare($consulta_sacarId)) {
 
-                //$sqlFecha
-                //$sqlSesion
-                //$sqlNum
+                if ($stmt->execute()) {
+                    $stmt->bind_result($sqlTrenId);
+                    $stmt->fetch();
+                    $stmt->free_result();
+                }
+            }
 
-                $stmt = $mysqli->prepare("INSERT INTO Imagen (fecha, pubId, sesion, num) VALUES (?, ?, ?, ?)");
-                $stmt->bind_param("sisi", $sqlFecha, $sqlPubId, $sqlSesion, $sqlNum);
+            // Sacar ultima pub // TODO sen 3
+            $consulta = "SELECT max(pubId) FROM publicacion limit 1";
+            if ($stmt = $mysqli->prepare($consulta)) {
+                if ($stmt->execute()) {
+                    $stmt->bind_result($sqlPubId);
+                    $stmt->fetch();
+                    $stmt->free_result();
+                }
+            }
+
+            //sqlExisteUser // TODO sen 4
+            $consulta = " SELECT COUNT( email) > 0 FROM usuario WHERE email=? limit 1";
+
+            if ($stmt = $mysqli->prepare($consulta)) {
+
+                $stmt->bind_param('s', $inputExisteUser);
+                if ($stmt->execute()) {
+                    $stmt->bind_result($sqlExisteUser);
+                    $stmt->fetch();
+                    $stmt->free_result();
+                }
+            }
+            //PREPARACION DE DATOS
+
+            // necesito la id del tren que es la sen 2 y el tipo tren que es la sen 1
+            //$sqlTipoTren;
+            $sqlTrenId++;
+            //$sqlModelo
+            //$sqlFechaFabricacion
+
+            $stmt = $mysqli->prepare("INSERT INTO Tren (trenId, modelo, tipoTren, fechaFabricacion) VALUES (?, ?, ?, ?)");
+            $stmt->bind_param("isii", $sqlTrenId, $sqlModelo, $sqlTipoTren, $sqlFechaFabricacion);
+            $stmt->execute();
+            // ver si existe el usuario
+            //$sqlContra
+
+            if ($sqlExisteUser != 1) {
+                $stmt = $mysqli->prepare("INSERT INTO Usuario (email, contra) VALUES (?, ?)");
+                $stmt->bind_param("ss", $sqlEmail, $sqlContra);
                 $stmt->execute();
             }
+
+            //Insertar en la publicacion
+            //$sqlTitulo
+            //$sqlPosicion
+            //$sqlComAuto
+            $sqlPubId++;
+            $stmt = $mysqli->prepare("INSERT INTO Publicacion (pubId, email, trenId, titulo, posicion, comAuto) VALUES (?, ?, ?, ?, ?, ?)");
+            $stmt->bind_param("isisss", $sqlPubId, $sqlEmail, $sqlTrenId, $sqlTitulo, $sqlPosicion, $sqlComAuto);
+            $stmt->execute();
+
+            // TODO Depuracion, guardado y recuperacion de archivos  VVV
+            
+            // $dirFotos = [];
+            $sqlLastIdImg;
+
+            for ($i = 0; $i < count($fotos["name"]); $i++) {
+
+                $nombreFoto = $fotos["name"][$i];
+                $tipoFoto = $fotos["type"][$i];
+                $tmpName = $fotos["tmp_name"][$i];
+
+                if ($tipoFoto === "image/png") {
+                    $consulta = " SELECT max(imgId) FROM imagen";
+
+                    if ($stmt = $mysqli->prepare($consulta)) {
+                        if ($stmt->execute()) {
+                            $stmt->bind_result($sqlLastIdImg);
+                            $stmt->fetch();
+                            $stmt->free_result();
+                            $sqlLastIdImg++;
+                        }
+                    }
+
+                    $nombreGuardado = "$sqlLastIdImg.png";
+                    move_uploaded_file($tmpName, "fotos/" . $nombreGuardado);
+                    //insertar datos fotos
+
+                    //$sqlFecha
+                    //$sqlSesion
+                    //$sqlNum
+
+                    $stmt = $mysqli->prepare("INSERT INTO Imagen (fecha, pubId, sesion, num) VALUES (?, ?, ?, ?)");
+                    $stmt->bind_param("sisi", $sqlFecha, $sqlPubId, $sqlSesion, $sqlNum);
+                    $stmt->execute();
+                }
+            }
+        } catch (Exception $e) {
+            echo 'Error: ' . $e->getMessage();
         }
-    } catch (Exception $e) {
-        echo 'Error: ' . $e->getMessage();
     }
 
-    // TODO HECHO Manejo errores
+    // TODO Manejo errores  VVV
 
     if ($error != "Hay errores en: ") {
         @$modelo = $_POST["modelo"];
@@ -224,9 +230,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <!DOCTYPE html>
     <html>
     <html lang="es">
+
     <head>
         <title>Train to DAW</title>
-        
+
         <meta charset="UTF-8">
         <link rel="stylesheet" href="./style.css">
     </head>
@@ -245,26 +252,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <input value="<?php if (isset($contra)) echo $contra; ?>" id="entradas" name="contra" type="password" class="margen" placeholder="Introduzca su contraseña" required>
 
                 <br>
-                <label for="slider" class="espacio">Fecha de fabricacion</label>
-                <input type="range" id="slider" name="slider" class="margen" min="1950" max="2023" step="1" value="<?php if (isset($slider)) {
-                                                                                                                        echo $slider;
-                                                                                                                    } else {
-                                                                                                                        echo "2023";
-                                                                                                                    } ?>" width="400px">
-                <output for="slider" id="sliderValue"><?PHP if (isset($slider)) {
-                                                            echo $slider;
-                                                        } else {
-                                                            echo "2023";
-                                                        }  ?></output>
-                <script>
-                    // Actualiza el valor del slider en tiempo real
-                    const slider = document.getElementById('slider');
-                    const sliderValue = document.getElementById('sliderValue');
 
-                    slider.addEventListener('input', function() {
-                        sliderValue.textContent = slider.value;
-                    });
-                </script>
 
                 <h3>Publicacion:</h3>
                 <label for="titulo">Titulo:</label>
@@ -285,7 +273,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <br><br>
                 <label for="modelo">Modelo:</label>
                 <input value="<?php if (isset($modelo)) echo $modelo; ?>" class="entradas" id="entradas" name="modelo" type="text" placeholder="Introduzce el modelo" required>
+                <label for="slider" class="espacio">Fecha de fabricacion</label>
+                <input type="range" id="slider" name="slider" class="margen" min="1950" max="2023" step="1" value="<?php if (isset($slider)) {
+                                                                                                                        echo $slider;
+                                                                                                                    } else {
+                                                                                                                        echo "2023";
+                                                                                                                    } ?>" width="400px">
+                <output for="slider" id="sliderValue"><?PHP if (isset($slider)) {
+                                                            echo $slider;
+                                                        } else {
+                                                            echo "2023";
+                                                        }  ?></output>
+                <script>
+                    // Actualiza el valor del slider en tiempo real
+                    const slider = document.getElementById('slider');
+                    const sliderValue = document.getElementById('sliderValue');
 
+                    slider.addEventListener('input', function() {
+                        sliderValue.textContent = slider.value;
+                    });
+                </script>
                 <br><br>
                 <label for="movimiento">Posicion:</label>
                 <select class="mov" name="movimiento" required>
@@ -337,7 +344,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <p class="right"><a href="foro.php"> Ir al foro</a></p>
             <p> <input type="submit" class="btn"></p>
             <br>
-            
+
             <br>
         </form>
     </body>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
-
-<head>
+    <head>
+        <title>Foro Train to DAW</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
@@ -14,8 +14,6 @@
     
     <?php
     session_start();
-    $s=@$_SESSION['email'];
-    echo "$s sdfsdf";
 
     // TODO Datos entrada mysql VVV
     include('datosInicioSql.php');
