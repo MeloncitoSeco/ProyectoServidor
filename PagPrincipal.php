@@ -31,6 +31,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } elseif (!validarTitulo(@$_POST["titulo"])) {
         $error .=  ", titulo muy largo";
     }
+    if (@$_POST["contra"] == "") {
+        $error .=  "Rellenar el contra ";
+    } elseif (!validarContra(@$_POST["contra"])) {
+        $error .=  ", La contraseña debe tener al menos 8 y 16 caracteres, al menos un dígito, al menos una minúscula y al menos una mayúscula. NO puede tener otros símbolos.";
+    }
 
     if (@$_POST["email"] == "") {
         $error .=  ", email ";
@@ -53,27 +58,57 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $error .= " y datos ";
     }
 
-    if (!count($fotos["name"]) <= 11) {
-        $error .= " Demasiadas fotos ";
-    }else {
+ // TODO Comprobar al menos hay una imagen que se va a guardar VVV
+
+    $numFotosGuardadas=0;
+
+            for ($i = 0; $i < count($fotos["name"]); $i++) {
+
+                $nombreFoto = $fotos["name"][$i];
+                $tipoFoto = $fotos["type"][$i];
+                $tmpName = $fotos["tmp_name"][$i];
+
+                if ($tipoFoto === "image/png") {
+                    $numFotosGuardadas++;
+                }
+            }
+
+    if (!($numFotosGuardadas < 11)  ) {
+            $error .= " Demasiadas fotos "; 
+    }elseif($numFotosGuardadas==0){
+        $error .= " Hay que subir al menos una foto valida, revise que el formato sea png ";
+    }elseif($error != "Hay errores en: "){
+            @$modelo = $_POST["modelo"];
+            @$titulo = $_POST["titulo"];
+            @$fecha = $_POST["fecha"];
+            @$email = $_POST["email"];
+            @$contra = $_POST["contra"];
+            @$slider = $_POST["slider"];
+            @$tren = $_POST["tren"];
+            @$movimiento = $_POST["movimiento"];
+            @$comu = $_POST["comu"];
+            @$datos = $_POST["datos"];
+            echo "<script>alert('$error');</script>";
+        }else{
+
         // TODO Sesion   VVV
         session_start();
         $sessionID = session_id();
         @$_SESSION['email'] = $email;
 
         // TODO insertar datos en base de datos VVV
-        $inputTipoTren = $tren;
-        $inputExisteUser = $email;
-        $sqlEmail = $email;
-        $sqlModelo = $modelo;
-        $sqlFechaFabricacion = $slider;
-        $sqlContra = $contra;
-        $sqlTitulo = $titulo; // TODO crear uninser llamado titulo VVV
-        $sqlPosicion = $movimiento;
-        $sqlComAuto = $comu;
-        $sqlFecha = $fecha;
-        $sqlSesion = $sessionID;
-        $sqlNum = "1";
+        @$inputTipoTren = $tren;
+        @$inputExisteUser = $email;
+        @$sqlEmail = $email;
+        @$sqlModelo = $modelo;
+        @$sqlFechaFabricacion = $slider;
+        @$sqlContra = $contra;
+        @$sqlTitulo = $titulo; // TODO crear uninser llamado titulo VVV
+        @$sqlPosicion = $movimiento;
+        @$sqlComAuto = $comu;
+        @$sqlFecha = $fecha;
+        @$sqlSesion = $sessionID;
+        @$sqlNum = "1";
 
         try {
             $mysqli = new mysqli($host, $usuario, $clave, $tabla);
@@ -160,6 +195,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             
             // $dirFotos = [];
             $sqlLastIdImg;
+            $numFotosGuardadas;
 
             for ($i = 0; $i < count($fotos["name"]); $i++) {
 
@@ -199,31 +235,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // TODO Manejo errores  VVV
 
-    if ($error != "Hay errores en: ") {
-        @$modelo = $_POST["modelo"];
-        @$titulo = $_POST["titulo"];
-        @$fecha = $_POST["fecha"];
-        @$email = $_POST["email"];
-        @$contra = $_POST["contra"];
-        @$slider = $_POST["slider"];
-        @$tren = $_POST["tren"];
-        @$movimiento = $_POST["movimiento"];
-        @$comu = $_POST["comu"];
-        @$datos = $_POST["datos"];
-        echo "<script>alert('$error');</script>";
-    } else { // si no hay errores lñega hasta aqui y ahora vamos a introducir los datos
+    // si no hay errores lñega hasta aqui y ahora vamos a introducir los datos
 
-        try {
-            $mysqli = new mysqli($host, $usuario, $clave, $tabla);
-            if ($mysqli->connect_error) {
-                die("Error de conexión: " . $mysqli->connect_error);
-                echo "error";
-            }
-        } catch (Exception $e) {
-            echo 'Error: ' . $e->getMessage();
+        if(!($error != "Hay errores en: ")){
+            header("Location: foro.php");
         }
-        header("Location: foro.php");
-    }
+        
+
 }
 ?>
 <! //TODO limpiar todos los formatos que no sirven VVV>

@@ -10,7 +10,7 @@
 
 <body>
     <h1>Train 2 Daw</h1>
-    <p><a href="main.php">Volver</a></p>
+    <p><a href="PagPrincipal.php">Volver</a></p>
     
     <?php
     session_start();

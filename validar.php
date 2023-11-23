@@ -12,23 +12,34 @@ function validarNombre($a)
 
 function validarContra($a)
 {
-    trim($a);
-    if (strlen($a) > 240)
-        return (false);
-    return (true);
+    $patron = "/^(?=.*\d)(?=.*[A-Z])(?=.*[a-z])\S{8,16}$/";
+    
+    if (strlen($a) > 240) {
+        return false;
+    }
+    $a = trim($a);
+    if (!preg_match($patron, $a)) {
+        return false;
+    }
+    return true;
 }
 
 function validarModelo($a)
 {
-    trim($a);
-    if (strlen($a) > 24)
+    $patron = "/^[a-zA-Z0-9\s\-]+$/";
+    
+    if (strlen($a) > 24){
         return (false);
+    }
+    trim($a);
+    if (!preg_match($patron, $a)) {
+        return false;
+    }
     return (true);
 }
 
 function validarTitulo($a)
 {
-    trim($a);
     if (strlen($a) > 24)
         return (false);
     return (true);
