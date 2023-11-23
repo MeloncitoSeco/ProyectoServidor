@@ -10,13 +10,15 @@
 
 <body>
     <h1>Train 2 Daw</h1>
-    <p><a href="main.php"> Volver</a></p>
+    <p><a href="main.php">Volver</a></p>
+    
     <?php
+    session_start();
+    $s=@$_SESSION['email'];
+    echo "$s sdfsdf";
+
     // TODO Datos entrada mysql VVV
-    $host = "127.0.0.1";
-    $tabla = "servidor";
-    $usuario = 'visual';
-    $clave = 'daw2324';
+    include('datosInicioSql.php');
 
     try {
         $mysqli = new mysqli($host, $usuario, $clave, $tabla);
@@ -35,13 +37,18 @@
                 $nombre[] = $row['nombre'];
                 $posicion[] = $row['posicion'];
                 $fechaFabricacion[] = $row['fechaFabricacion'];
+                if(@$_SESSION['email']===$row['email']){
+                    $email[] = "Tu";
+                }else{
+                    $email[] = $row['email'];
+                }
                 $email[] = $row['email'];
                 $comAuto[] = $row['comAuto'];
             }
             foreach ($pubId as $key => $value) {
                 echo "<br><div class = \"foroTitulo\"><h3>$titulo[$key]</h3></div><br>";
                 echo "<div class=\"foro\">";
-                echo "<p>Modelo: $modelo[$key]</p><p>Tipo: $modelo[$key]</p><br>";
+                echo "<p>Modelo: $modelo[$key]</p><p>Tipo: $nombre[$key]</p><br>";
                 echo "<p>Estaba: $posicion[$key]</p><p>Del anio: $fechaFabricacion[$key]</p><br>";
                 $consulta = "SELECT * from Imagen i where pubId=$value order by imgId asc ";
                 $result = $mysqli->query($consulta);
@@ -54,8 +61,8 @@
                         echo '<img class= imagen src="' . $rutaImagen . '" alt="Imagen" >';
                     }
                 }
-                echo "<br><p>Fecha de la foto: $fechaFoto</p><br>";
-                echo "<p>Creador: $email[$key]</p><p>Foto tomada en: $comAuto[$key]</p><br>";
+                echo "<br><p>Fecha de la foto: $fechaFoto</p><p>Foto tomada en: $comAuto[$key]</p><br>";
+                echo "<p>Creador: $email[$key]</p><br>";
                 echo "</div><br>";
             }
         }

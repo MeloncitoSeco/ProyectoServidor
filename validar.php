@@ -29,7 +29,7 @@ function validarModelo($a)
 function validarTitulo($a)
 {
     trim($a);
-    if (strlen($a) > 120)
+    if (strlen($a) > 24)
         return (false);
     return (true);
 }

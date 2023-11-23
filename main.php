@@ -2,12 +2,9 @@
 /* si va bien redirige a parametrosFormulario.php si va mal, mensaje de error */
 include('validar.php');
 // TODO Datos entrada mysql VVV
-$host = "127.0.0.1";
-$tabla = "servidor";
-$usuario = 'visual';
-$clave = 'daw2324';
+include('datosInicioSql.php');
 
-// TODO Validar entradas de fotos
+
 // TODO añadir titulo pub
 $error = "Hay errores en: ";
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -24,12 +21,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if (@$_POST["modelo"] == "") {
         $error .=  ", el modelo es obligatorio";
-    } elseif (validarModelo(@$_POST["modelo"])) {
+    } elseif (!validarModelo(@$_POST["modelo"])) {
+        $error .=  ", error en el modelo ";
     }
 
     if (@$_POST["titulo"] == "") {
         $error .=  "Rellenar el titulo ";
-    } elseif (validarTitulo(@$_POST["titulo"])) {
+    } elseif (!validarTitulo(@$_POST["titulo"])) {
+        $error .=  ", titulo muy largo";
     }
 
     if (@$_POST["email"] == "") {
@@ -152,7 +151,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt->bind_param("isisss", $sqlPubId, $sqlEmail, $sqlTrenId, $sqlTitulo, $sqlPosicion, $sqlComAuto);
         $stmt->execute();
 
-        // TODO Depuracion, guardado y recuperacion de archivos
+        // TODO Depuracion, guardado y recuperacion de archivos  VVV
         $fotos = $_FILES['fotos'];
         // $dirFotos = [];
         $sqlLastIdImg;
@@ -191,7 +190,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } catch (Exception $e) {
         echo 'Error: ' . $e->getMessage();
     }
-    session_destroy();
 
     // TODO HECHO Manejo errores
 
