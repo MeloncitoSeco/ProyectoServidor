@@ -8,9 +8,8 @@
     <link rel="stylesheet" href="./style2.css">
 </head>
 
-<body>
-    <h1>Train 2 Daw</h1><br>
-    <p style="padding-right: 30px; display: inline-block;"><a href="PagPrincipal.php">Volver</a></p><p style="padding-right: 30px; display: inline-block;"> <a href="foroPrimeroNuevo.php">Primero nuevo</a></p>
+<body><h1>Train 2 Daw</h1><br>
+    <p style="padding-right: 30px; display: inline-block;"><a href="PagPrincipal.php">Volver</a></p>         <p style="padding-right: 30px; display: inline-block;"> <a href="foro.php">Primero antiguo</a></p>
     
     <?php
     session_start();
@@ -25,7 +24,7 @@
             echo "error";
         }
 
-        $consulta = "SELECT * FROM Publicacion p  join Tren t on p.trenId=t.trenId join Usuario u on u.email=p.email  join tipoTren tt on tt.tipoTren = t.tipoTren order by pubId asc ";
+        $consulta = "SELECT * FROM Publicacion p  join Tren t on p.trenId=t.trenId join Usuario u on u.email=p.email  join tipoTren tt on tt.tipoTren = t.tipoTren order by pubId desc ";
         $result = $mysqli->query($consulta);
         if ($result) {
             while ($row = $result->fetch_assoc()) {

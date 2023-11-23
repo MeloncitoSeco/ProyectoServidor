@@ -103,7 +103,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         @$sqlModelo = $modelo;
         @$sqlFechaFabricacion = $slider;
         @$sqlContra = $contra;
-        @$sqlTitulo = $titulo; // TODO crear uninser llamado titulo VVV
+        @$sqlTitulo = $titulo; // TODO crear un inser llamado titulo VVV
         @$sqlPosicion = $movimiento;
         @$sqlComAuto = $comu;
         @$sqlFecha = $fecha;
@@ -238,7 +238,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // si no hay errores lñega hasta aqui y ahora vamos a introducir los datos
 
         if(!($error != "Hay errores en: ")){
-            header("Location: foro.php");
+            header("Location: foroPrimeroNuevo.php");
         }
         
 
@@ -359,7 +359,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                                                                     echo "2023";
                                                                                 } ?>>
             </left>
-            <p class="right"><a href="foro.php"> Ir al foro</a></p>
+            <p class="right"><a href="foroPrimeroNuevo.php"> Ir al foro</a></p>
             <p> <input type="submit" class="btn"></p>
             <br>
 
