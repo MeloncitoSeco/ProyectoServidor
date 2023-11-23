@@ -37,12 +37,11 @@
                 $nombre[] = $row['nombre'];
                 $posicion[] = $row['posicion'];
                 $fechaFabricacion[] = $row['fechaFabricacion'];
-                if(@$_SESSION['email']===$row['email']){
+                if(@$_SESSION['email']==$row['email']){
                     $email[] = "Tu";
                 }else{
                     $email[] = $row['email'];
                 }
-                $email[] = $row['email'];
                 $comAuto[] = $row['comAuto'];
             }
             foreach ($pubId as $key => $value) {
